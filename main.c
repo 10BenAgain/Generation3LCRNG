@@ -26,8 +26,9 @@ void increment_seed(uint32_t *seed, uint32_t advances);
 void decrement_seed(uint32_t *seed, uint32_t advances);
 void decrement_seed_no_inv(uint32_t *seed, uint32_t advances);
 void check_seed(uint32_t *seed);
-const char* get_nature_str(int key);
 void method1_generate(uint32_t *seed, uint32_t advances, uint32_t *PID, uint8_t *nature, uint8_t *ability, uint8_t *IVs);
+
+const char* get_nature_str(int key);
 int is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
 
 const char* shiny_types[] = {"None", "Star", "Square"};
@@ -105,6 +106,17 @@ typedef struct {
     const char *name;
 } Nature;
 
+typedef enum {
+    MaleOnly    = 0,
+    FemaleOnly  = 1,
+    Unknown     = 3,
+    F1M7        = 0x1F,
+    F1M3        = 0x40,
+    F1M1        = 0x1A,
+    F3M1        = 0x40,
+    F7M1        = 0x1F,
+} GenderRatio;
+
 Nature natures[] = {
         {0,     "Hardy"     },
         {1,     "Lonely"    },
@@ -133,6 +145,17 @@ Nature natures[] = {
         {24,    "Quirky"    }
 };
 
+typedef struct {
+    uint32_t dex;
+    const char* name;
+    uint8_t base_IVs[6];
+    GenderRatio gr;
+} Pokemon;
+
+Pokemon pokemon[152] = {
+        {1, "Bulbasaur", {45, 49, 49, 65, 65, 45}, F1M7},
+};
+
 const char* get_nature_str(int key) {
     if (key > sizeof(natures)/sizeof(natures[0])){
         return "Huh?!";
@@ -150,27 +173,7 @@ int is_shiny(uint32_t PID, uint32_t TID, uint32_t SID) {
     else
         return 0;
 }
-typedef enum {
-    MaleOnly    = 0,
-    FemaleOnly  = 1,
-    Unknown     = 3,
-    F1M7        = 0x1F,
-    F1M3        = 0x40,
-    F1M1        = 0x1A,
-    F3M1        = 0x40,
-    F7M1        = 0x1F,
-} GenderRatio;
 
-typedef struct {
-    uint32_t dex;
-    const char* name;
-    uint8_t base_IVs[6];
-    GenderRatio gr;
-} Pokemon;
-
-Pokemon pokemon[152] = {
-        {1, "Bulbasaur", {45, 49, 49, 65, 65, 45}, F1M7},
-};
 
 // Probably a very roundabout way of calculating the inverse C
 void check_seed(uint32_t *seed) {
