@@ -9,6 +9,7 @@ extern const char* encounter_category[];
 const char* get_nature_str(uint8_t key);
 int is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
 int get_hp_value(uint8_t *IVs);
+int get_hp_power(uint8_t *IVs);
 
 typedef struct {
     int key;

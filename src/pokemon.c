@@ -289,8 +289,7 @@ int
 get_hp_value(uint8_t *IVs) {
     int sum = 0;
     int i, j;
-    j = 1;
-    for (i = 0; i < 3; i++) {
+    for (i = 0, j = 1; i < 3; i++) {
         sum += (IVs[i] % 2) * j;
         j *= 2;
     }
@@ -300,3 +299,20 @@ get_hp_value(uint8_t *IVs) {
 
     return (sum * 15) / 63;
 }
+
+int
+get_hp_power(uint8_t *IVs) {
+    int sum = 0;
+    int i, j;
+    for (i = 0, j = 1; i < 3; i++) {
+        sum += ((IVs[i] >> 1) & 1) * j;
+        j *= 2;
+    }
+    sum += ((IVs[5] >> 1) & 1) * 8;
+    sum += ((IVs[3] >> 1) & 1) * 16;
+    sum += ((IVs[4] >> 1) & 1) * 32;
+
+    return (int)((sum * 40) / 63) + 30;
+}
+
+// (1)

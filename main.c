@@ -36,7 +36,7 @@ int main() {
 
         if (shiny) {
             printf("%d  |", i);
-            printf("PID: %X |  ", PID);
+            printf("%X |  ", PID);
             printf("%s |  ", get_nature_str(nature));
             printf("Ability: %X |  ", ability);
 
@@ -44,8 +44,8 @@ int main() {
                 printf("%d  ", IVs[j]);
             }
 
-            printf("| Shiny : %s", shiny_types[shiny]);
-            printf("| HP : %s | ", HP[get_hp_value(IVs)].type);
+            printf("| %s", shiny_types[shiny]);
+            printf("| %s : %d | ", HP[get_hp_value(IVs)].type, get_hp_power(IVs));
             printf("Gender: %d\n",get_gender(PID, pokemon[1].gr));
         }
         init_seed = init_copy;
