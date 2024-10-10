@@ -17,6 +17,25 @@ const char* encounter_category[] = {
         "Roamers"
 };
 
+const HiddenPower HP[16] = {
+    {0,     "Fighting"  },
+    {1,     "Flying"    },
+    {2,     "Poison"    },
+    {3,     "Ground"    },
+    {4,     "Rock"      },
+    {5,     "Bug"       },
+    {6,     "Ghost"     },
+    {7,     "Steel"     },
+    {8,     "Fire"      },
+    {9,     "Water"     },
+    {10,    "Grass"     },
+    {11,    "Electric"  },
+    {12,    "Psychic"   },
+    {13,    "Ice"       },
+    {14,    "Dragon"    },
+    {15,    "Dark"      }
+};
+
 const Nature natures[25] = {
         {0,     "Hardy"     },
         {1,     "Lonely"    },
@@ -251,4 +270,33 @@ is_shiny(uint32_t PID, uint32_t TID, uint32_t SID) {
         return 1;
     else
         return 0;
+}
+
+int 
+get_gender(uint32_t PID, GenderRatio gr) {
+    switch (gr)
+        {
+        case 0:
+        case 1:
+        case 3:
+            return gr;
+        default:
+            return (PID & 255) < gr;
+        }
+};
+
+int
+get_hp_value(uint8_t *IVs) {
+    int sum = 0;
+    int i, j;
+    j = 1;
+    for (i = 0; i < 3; i++) {
+        sum += (IVs[i] % 2) * j;
+        j *= 2;
+    }
+    sum += (IVs[5] % 2) * 8;
+    sum += (IVs[3] % 2) * 16;
+    sum += (IVs[4] % 2) * 32;
+
+    return (sum * 15) / 63;
 }

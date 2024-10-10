@@ -8,6 +8,7 @@ extern const char* encounter_category[];
 
 const char* get_nature_str(uint8_t key);
 int is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
+int get_hp_value(uint8_t *IVs);
 
 typedef struct {
     int key;
@@ -23,6 +24,13 @@ typedef enum {
     F1M1        = 0x1A,
     F3M1        = 0x40,
 } GenderRatio;
+
+typedef struct {
+    int key;
+    const char *type;
+} HiddenPower;
+
+int get_gender(uint32_t PID, GenderRatio gr);
 
 typedef struct {
     uint32_t dex;
@@ -51,5 +59,6 @@ typedef struct {
 extern const Nature natures[25];
 extern const Pokemon pokemon[151];
 extern const Encounter StaticEncounters[];
+extern const HiddenPower HP[16];
 
 #endif
