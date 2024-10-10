@@ -19,7 +19,7 @@ $(BUILD)/%.o:$(SOURCE)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD)/%.o:%.c
-	@mkdir $(BUILD)
+	@mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean: all
