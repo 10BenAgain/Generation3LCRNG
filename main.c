@@ -4,28 +4,52 @@
 #include "src/pokemon.h"
 
 int main() {
-    uint32_t adv = 80682;
-    uint32_t init_seed = 0xEE59;
     uint32_t PID;
     uint8_t nature;
     uint8_t ability;
     uint8_t IVs[6];
-    uint32_t TID = 34437;
-    uint32_t SID = 44782;
 
-    method1_generate(&init_seed, adv, &PID, &nature, &ability, IVs);
-    int shiny = is_shiny(PID, TID, SID);
+    uint32_t adv;
+    uint32_t init_seed;
+    uint32_t TID;
+    uint32_t SID;
 
-    if (shiny) {
-        printf("PID: %X |  ", PID);
-        printf("Nature: %s |  ", get_nature_str(nature));
-        printf("Ability value: %X |  ", ability);
+    printf("Enter TID: \n");
+    scanf("%d", &TID);
 
-        for (int j = 0; j < 6; j++) {
-            printf("%d  ", IVs[j]);
+    printf("Enter SID: \n");
+    scanf("%d", &SID);
+
+    printf("Enter max advance: \n");
+    scanf("%d", &adv);
+
+    printf("Enter staring seed: \n");
+    scanf("%X", &init_seed);
+
+    uint32_t init_copy;
+    init_copy = init_seed;
+    
+    uint32_t i, j;
+    for (i = 0; i < adv; i++) {
+        method1_generate(&init_seed, i, &PID, &nature, &ability, IVs);
+        int shiny = is_shiny(PID, TID, SID);
+
+        if (shiny) {
+            printf("%d  |", i);
+            printf("PID: %X |  ", PID);
+            printf("%s |  ", get_nature_str(nature));
+            printf("Ability: %X |  ", ability);
+
+            for (j = 0; j < 6; j++) {
+                printf("%d  ", IVs[j]);
+            }
+
+            printf("| Shiny : %s", shiny_types[shiny]);
+            printf("| HP : %s | ", HP[get_hp_value(IVs)].type);
+            printf("Gender: %d\n",get_gender(PID, pokemon[1].gr));
         }
+        init_seed = init_copy;
     }
-    printf("| Is shiny? : %s | \n", shiny_types[shiny]);
 
     return 0;
 }
