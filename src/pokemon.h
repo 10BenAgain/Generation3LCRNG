@@ -10,6 +10,8 @@ const char* get_nature_str(uint8_t key);
 int is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
 int get_hp_value(uint8_t *IVs);
 int get_hp_power(uint8_t *IVs);
+int get_unown_shape(uint32_t PID);
+char unown_symbols(int val);
 
 typedef struct {
     int key;

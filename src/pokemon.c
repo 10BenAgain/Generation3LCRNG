@@ -285,6 +285,7 @@ get_gender(uint32_t PID, GenderRatio gr) {
         }
 };
 
+// https://bulbapedia.bulbagarden.net/wiki/Hidden_Power_(move)/Calculation
 int
 get_hp_value(uint8_t *IVs) {
     int sum = 0;
@@ -315,4 +316,32 @@ get_hp_power(uint8_t *IVs) {
     return (int)((sum * 40) / 63) + 30;
 }
 
-// (1)
+// https://bulbapedia.bulbagarden.net/wiki/Personality_value#Unown.27s_letter
+// 0000011 00000011 00000011 00000011 = (0x3030303 & 3000000) = (00000011 00000000 00000000 00000000) >> 18 = 1100 0000
+// 0000011 00000011 00000011 00000011 = (0x3030303 & 30000  ) = (         00000011 00000000 00000000) >> 12 = 0011 0000
+// 0000011 00000011 00000011 00000011 = (0x3030303 & 300  ) =   (                  00000011 00000000) >> 6  = 0000 1100
+// 0000011 00000011 00000011 00000011 = (0x3030303 & 3  ) =   (                             00000011) 
+
+int
+get_unown_shape(uint32_t PID) {
+    return (
+        ((PID & 0x3000000) >> 18) | 
+        ((PID & 0x30000) >> 12) | 
+        ((PID & 0x300) >> 6) | 
+        (PID & 0x3)) % 28;
+}
+
+char 
+unown_symbols(int val) {
+    if (val > 25) {
+        switch (val) {
+            case 26:
+                return '!';
+            case 27:
+                return '?';
+            default:
+                return '$';
+        }
+    } else
+        return (char)(val + 65);
+}
