@@ -1,5 +1,11 @@
 #include "pokemon.h"
 
+const char* gender_s[] = {
+    "Male",
+    "Female",
+    "None"
+};
+
 const char* shiny_types[] = {
         "None",
         "Star",
@@ -260,6 +266,18 @@ get_nature_str(uint8_t key) {
     return natures[key].name;
 }
 
+const char* 
+get_gender_str(uint8_t key) {
+    switch (key)
+    {
+    case 0:
+    case 1: 
+        return gender_s[key];
+    default:
+        return gender_s[2];
+    }
+}
+
 int 
 is_shiny(uint32_t PID, uint32_t TID, uint32_t SID) {
     uint16_t psv = (TID ^ SID) ^ (PID >> 16) ^ (PID & 0xFFFF);
@@ -272,7 +290,7 @@ is_shiny(uint32_t PID, uint32_t TID, uint32_t SID) {
         return 0;
 }
 
-int 
+uint8_t
 get_gender(uint32_t PID, GenderRatio gr) {
     switch (gr)
         {
@@ -290,9 +308,8 @@ int
 get_hp_value(uint8_t *IVs) {
     int sum = 0;
     int i, j;
-    for (i = 0, j = 1; i < 3; i++) {
+    for (i = 0, j = 1; i < 3; i++, j *= 2) {
         sum += (IVs[i] % 2) * j;
-        j *= 2;
     }
     sum += (IVs[5] % 2) * 8;
     sum += (IVs[3] % 2) * 16;
@@ -305,9 +322,8 @@ int
 get_hp_power(uint8_t *IVs) {
     int sum = 0;
     int i, j;
-    for (i = 0, j = 1; i < 3; i++) {
+    for (i = 0, j = 1; i < 3; i++, j *= 2) {
         sum += ((IVs[i] >> 1) & 1) * j;
-        j *= 2;
     }
     sum += ((IVs[5] >> 1) & 1) * 8;
     sum += ((IVs[3] >> 1) & 1) * 16;

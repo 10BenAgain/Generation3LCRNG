@@ -3,10 +3,12 @@
 
 #include <stdint.h>
 
+extern const char* gender_s[];
 extern const char* shiny_types[];
 extern const char* encounter_category[];
 
 const char* get_nature_str(uint8_t key);
+const char* get_gender_str(uint8_t key);
 int is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
 int get_hp_value(uint8_t *IVs);
 int get_hp_power(uint8_t *IVs);
@@ -33,7 +35,7 @@ typedef struct {
     const char *type;
 } HiddenPower;
 
-int get_gender(uint32_t PID, GenderRatio gr);
+uint8_t get_gender(uint32_t PID, GenderRatio gr);
 
 typedef struct {
     uint32_t dex;
