@@ -1,2 +1,7 @@
+# Personal files
 build/
+test/
+
+# Debugger + IDE nonsense
 .vscode/
+.idea/

@@ -42,11 +42,6 @@ increment_seed(uint32_t *seed, uint32_t advances) {
         *seed = (*seed * MULTIPLIER + INCREMENT) % MOD;
 }
 
-uint32_t 
-next_seed(uint32_t *seed) {
-    return (*seed * MULTIPLIER + INCREMENT) % MOD;
-}
-
 void 
 decrement_seed(uint32_t *seed, uint32_t advances) {
     while(advances--) {
@@ -56,6 +51,11 @@ decrement_seed(uint32_t *seed, uint32_t advances) {
         else
             break;
     }
+}
+
+uint32_t 
+next_seed(const uint32_t *seed) {
+    return (*seed * MULTIPLIER + INCREMENT) % MOD;
 }
 
 uint16_t 

@@ -260,9 +260,8 @@ const Encounter StaticEncounters[] = {
 
 const char* 
 get_nature_str(uint8_t key) {
-    if (key > sizeof(natures)/sizeof(natures[0])){
+    if (key > sizeof(natures)/sizeof(natures[0]))
         return "Huh?!";
-    }
     return natures[key].name;
 }
 
@@ -278,7 +277,7 @@ get_gender_str(uint8_t key) {
     }
 }
 
-int 
+uint8_t
 is_shiny(uint32_t PID, uint32_t TID, uint32_t SID) {
     uint16_t psv = (TID ^ SID) ^ (PID >> 16) ^ (PID & 0xFFFF);
 
@@ -304,7 +303,7 @@ get_gender(uint32_t PID, GenderRatio gr) {
 };
 
 // https://bulbapedia.bulbagarden.net/wiki/Hidden_Power_(move)/Calculation
-int
+uint8_t
 get_hp_value(uint8_t *IVs) {
     int sum = 0;
     int i, j;
@@ -318,7 +317,7 @@ get_hp_value(uint8_t *IVs) {
     return (sum * 15) / 63;
 }
 
-int
+uint8_t
 get_hp_power(uint8_t *IVs) {
     int sum = 0;
     int i, j;
@@ -338,7 +337,7 @@ get_hp_power(uint8_t *IVs) {
 // 0000011 00000011 00000011 00000011 = (0x3030303 & 300  ) =   (                  00000011 00000000) >> 6  = 0000 1100
 // 0000011 00000011 00000011 00000011 = (0x3030303 & 3  ) =   (                             00000011) 
 
-int
+uint8_t
 get_unown_shape(uint32_t PID) {
     return (
         ((PID & 0x3000000) >> 18) | 
@@ -347,7 +346,7 @@ get_unown_shape(uint32_t PID) {
         (PID & 0x3)) % 28;
 }
 
-char 
+char
 unown_symbols(int val) {
     if (val > 25) {
         switch (val) {

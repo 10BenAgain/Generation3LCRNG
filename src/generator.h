@@ -12,7 +12,6 @@ typedef struct {
 } Player;
 
 typedef struct {
-    Player pl;
     uint8_t mon;
     uint32_t PID;
     uint8_t nature;
@@ -24,7 +23,6 @@ typedef struct {
     uint8_t shiny;
 } Static_e;
 
-
-void generate_static_encounter(Static_e enc, uint16_t seed, uint32_t init, uint32_t max );
+Static_e **generate_encounter_array(Player pl, uint16_t mon, uint16_t seed, uint32_t init, uint32_t max);
 
 #endif

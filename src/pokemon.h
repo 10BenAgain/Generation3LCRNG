@@ -9,10 +9,10 @@ extern const char* encounter_category[];
 
 const char* get_nature_str(uint8_t key);
 const char* get_gender_str(uint8_t key);
-int is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
-int get_hp_value(uint8_t *IVs);
-int get_hp_power(uint8_t *IVs);
-int get_unown_shape(uint32_t PID);
+uint8_t is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
+uint8_t get_hp_value(uint8_t *IVs);
+uint8_t get_hp_power(uint8_t *IVs);
+uint8_t get_unown_shape(uint32_t PID);
 char unown_symbols(int val);
 
 typedef struct {
@@ -45,14 +45,14 @@ typedef struct {
 } Pokemon;
 
 typedef enum {
-        Starters,
-        Fossils,
-        Gifts,
-        GameCorner,
-        Stationary,
-        Legends,
-        Events,
-        Roamers
+    Starters,
+    Fossils,
+    Gifts,
+    GameCorner,
+    Stationary,
+    Legends,
+    Events,
+    Roamers
 } Category;
 
 typedef struct {

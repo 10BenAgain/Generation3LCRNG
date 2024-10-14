@@ -1,38 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "generator.h"
 
-void 
-generate_static_encounter(Static_e enc, uint16_t seed, uint32_t init, uint32_t max ) {
-    uint32_t current_seed, advance;
-    current_seed = seed;
-    advance = max - init;
+// Creates an array of pointers to static encounter structs
+Static_e **generate_encounter_array(Player pl, uint16_t mon, uint16_t seed, uint32_t init, uint32_t max) {
+    if (max <= 0)
+        return NULL;
 
+    uint32_t advances, current_seed;
+    advances = max - init;
+    if (advances <= 0)
+        return NULL;
+
+    // Allocates n memory blocks where n is the amount of advances requested
+    Static_e **encounters = (Static_e**)calloc(advances, sizeof(Static_e *));
+
+    // Make sure it actually worked
+    if (encounters == NULL) {
+        return NULL;
+    }
+
+    current_seed = seed;
     int i, j;
-    for (i = 0; i <= (int)advance; i++) {
+    for (i = 0; i <= (int)advances; i++) {
+        encounters[i] = (Static_e *)malloc(sizeof(Static_e));
+        // If malloc didn't work, then free everything we have allocated already
+        if (encounters[i] == NULL) {
+            for (j = 0; j < i; j++)
+                free(encounters[j]);
+            free(encounters);
+            return NULL;
+        }
+        // Mon might not be necessary right now
+        encounters[i]->mon = mon;
+
         method1_generate(
             current_seed,
-            &enc.PID,
-            &enc.nature,
-            &enc.ability,
-            enc.IVs
+            &encounters[i]->PID,
+            &encounters[i]->nature,
+            &encounters[i]->ability,
+            encounters[i]->IVs
         );
-        enc.shiny = is_shiny(enc.PID, enc.pl.TID, enc.pl.SID);
-        enc.gender = get_gender_str(get_gender(enc.PID, pokemon[enc.mon].gr));
-        enc.hp = HP[get_hp_value(enc.IVs)].type;
-        enc.hp_pow = get_hp_power(enc.IVs);
 
-        printf("%d | ", i);
-        printf("%X | ", enc.PID);
-        printf("%s | " , get_nature_str(enc.nature));
-        printf("Ability: %X |", enc.ability);
-        for (j = 0; j < 6; j++) {
-                printf("%d  ", enc.IVs[j]);
-            }
-            
-        printf("| %s ", shiny_types[enc.shiny]);
-        printf("| %s ", enc.hp);
-        printf("| %d ", enc.hp_pow);
-        printf("| %s \n", enc.gender);
-
+        encounters[i]->shiny = is_shiny(encounters[i]->PID, pl.TID, pl.SID);
+        encounters[i]->gender = get_gender_str(get_gender(encounters[i]->PID, pokemon[mon].gr));
+        encounters[i]->hp = HP[get_hp_value(encounters[i]->IVs)].type;
+        encounters[i]->hp_pow = get_hp_power(encounters[i]->IVs);
         current_seed = next_seed(&current_seed);
     }
+    return encounters;
 }
