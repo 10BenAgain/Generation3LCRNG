@@ -42,6 +42,8 @@ typedef struct {
     const char* name;
     uint8_t base_IVs[6];
     GenderRatio gr;
+    const char *ab0;
+    const char *ab1;
 } Pokemon;
 
 typedef enum {
