@@ -1,4 +1,6 @@
 #include "pokemon.h"
+#include <stdlib.h>
+
 
 const char* gender_s[] = {
     "Male",
@@ -68,6 +70,35 @@ const Nature natures[25] = {
         {22,    "Sassy"     },
         {23,    "Careful"   },
         {24,    "Quirky"    }
+};
+/* ATK/DEF/SPA/SPD/SPE */
+const NatureMult nature_mult_table[25] = {
+    { 0,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+    { 1,   {1.1,   0.9,   1.0,   1.0,   1.0}  },
+    { 2,   {1.1,   1.0,   1.0,   1.0,   0.9}  },
+    { 3,   {1.1,   1.0,   0.9,   1.0,   1.0}  },
+    { 4,   {1.1,   1.0,   1.0,   0.9,   1.0}  },
+    { 5,   {0.9,   1.1,   1.0,   1.0,   1.0}  },
+    { 6,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+    { 7,   {1.0,   1.1,   1.0,   1.0,   0.9}  },
+    { 8,   {1.0,   1.1,   0.9,   1.0,   1.0}  },
+    { 9,   {1.0,   1.1,   1.0,   0.9,   1.0}  },
+    {10,   {0.9,   1.0,   1.0,   1.0,   1.1}  },
+    {11,   {1.0,   0.9,   1.0,   1.0,   1.1}  },
+    {12,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+    {13,   {1.0,   1.0,   0.9,   1.0,   1.1}  },
+    {14,   {1.0,   1.0,   1.0,   0.9,   1.1}  },
+    {15,   {0.9,   1.0,   1.1,   1.0,   1.0}  },
+    {16,   {1.0,   0.9,   1.1,   1.0,   1.0}  },
+    {17,   {1.0,   1.0,   1.1,   1.0,   0.9}  },
+    {18,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+    {19,   {1.0,   1.0,   1.1,   0.9,   1.0}  },
+    {20,   {0.9,   1.0,   1.0,   1.1,   1.0}  },
+    {21,   {1.0,   0.9,   1.0,   1.1,   1.0}  },
+    {22,   {1.0,   1.0,   1.0,   1.1,   0.9}  },
+    {23,   {1.0,   1.0,   0.9,   1.1,   1.0}  },
+    {24,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+
 };
 
 const Pokemon pokemon[151] = {
@@ -258,19 +289,19 @@ const Encounter StaticEncounters[] = {
         {Roamers,       "Suicune",      50},
 };
 
-const char* 
+const char*
 get_nature_str(uint8_t key) {
     if (key > sizeof(natures)/sizeof(natures[0]))
         return "Huh?!";
     return natures[key].name;
 }
 
-const char* 
+const char*
 get_gender_str(uint8_t key) {
     switch (key)
     {
     case 0:
-    case 1: 
+    case 1:
         return gender_s[key];
     default:
         return gender_s[2];
@@ -335,14 +366,14 @@ get_hp_power(uint8_t *IVs) {
 // 0000011 00000011 00000011 00000011 = (0x3030303 & 3000000) = (00000011 00000000 00000000 00000000) >> 18 = 1100 0000
 // 0000011 00000011 00000011 00000011 = (0x3030303 & 30000  ) = (         00000011 00000000 00000000) >> 12 = 0011 0000
 // 0000011 00000011 00000011 00000011 = (0x3030303 & 300  ) =   (                  00000011 00000000) >> 6  = 0000 1100
-// 0000011 00000011 00000011 00000011 = (0x3030303 & 3  ) =   (                             00000011) 
+// 0000011 00000011 00000011 00000011 = (0x3030303 & 3  ) =   (                             00000011)
 
 uint8_t
 get_unown_shape(uint32_t PID) {
     return (
-        ((PID & 0x3000000) >> 18) | 
-        ((PID & 0x30000) >> 12) | 
-        ((PID & 0x300) >> 6) | 
+        ((PID & 0x3000000) >> 18) |
+        ((PID & 0x30000) >> 12) |
+        ((PID & 0x300) >> 6) |
         (PID & 0x3)) % 28;
 }
 
@@ -359,4 +390,41 @@ unown_symbols(int val) {
         }
     } else
         return (char)(val + 65);
+}
+
+uint8_t* get_iv_range(int level, Nature nature, int base_stat, int stat_total, int stat_num, int ev) {
+
+    uint8_t* ivs = malloc(sizeof(uint8_t) * 2);
+    int lower_bound, upper_bound, temp_stat_total, i;
+    if (level < 1 || level > 100 || base_stat < 1 || stat_total < 1 || ev < 0 || ev > 255) {
+        return NULL;
+    }
+    if (ev > 252){
+        ev = 252;
+    }
+
+    if (stat_num == 0) {
+        lower_bound = ((stat_total - 10.0) * 100.0) / level - 2*base_stat - ev /4.0 - 100.0;
+        upper_bound = lower_bound;
+        temp_stat_total = ((2.0*base_stat + upper_bound + 1 + ev/4.0 + 100.0) * level) / 100.0 + 10.0;
+        for (i = lower_bound; temp_stat_total == stat_total; i++){
+            upper_bound++;
+            temp_stat_total = ((2.0*base_stat + upper_bound+ 1 + ev/4.0 + 100.0) * level) / 100.0 + 10.0;
+        }
+
+    } else {
+        float nature_mult = nature_mult_table[nature.key].mults[stat_num - 1];
+        lower_bound = ((stat_total/nature_mult - 5.0) * 100.0) / level - 2.0*base_stat - ev/4.0;
+        upper_bound = lower_bound;
+        temp_stat_total = stat_total = (((2.0*base_stat + upper_bound + 1 + ev/4.0) * level) / 100.0 + 5.0) * nature_mult;
+        for (i = lower_bound; temp_stat_total == stat_total; i++){
+            upper_bound++;
+            temp_stat_total = (((2.0*base_stat + upper_bound + 1 + ev/4.0) * level) / 100.0 + 5.0) * nature_mult;
+        }
+    }
+    ivs[0] = lower_bound;
+    ivs[1] = upper_bound;
+
+    return ivs;
+
 }
