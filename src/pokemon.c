@@ -70,6 +70,35 @@ const Nature natures[25] = {
         {24,    "Quirky"    }
 };
 
+/* ATK/DEF/SPA/SPD/SPE */
+const NatureMult nature_mult_table[25] = {
+        { 0,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+        { 1,   {1.1,   0.9,   1.0,   1.0,   1.0}  },
+        { 2,   {1.1,   1.0,   1.0,   1.0,   0.9}  },
+        { 3,   {1.1,   1.0,   0.9,   1.0,   1.0}  },
+        { 4,   {1.1,   1.0,   1.0,   0.9,   1.0}  },
+        { 5,   {0.9,   1.1,   1.0,   1.0,   1.0}  },
+        { 6,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+        { 7,   {1.0,   1.1,   1.0,   1.0,   0.9}  },
+        { 8,   {1.0,   1.1,   0.9,   1.0,   1.0}  },
+        { 9,   {1.0,   1.1,   1.0,   0.9,   1.0}  },
+        {10,   {0.9,   1.0,   1.0,   1.0,   1.1}  },
+        {11,   {1.0,   0.9,   1.0,   1.0,   1.1}  },
+        {12,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+        {13,   {1.0,   1.0,   0.9,   1.0,   1.1}  },
+        {14,   {1.0,   1.0,   1.0,   0.9,   1.1}  },
+        {15,   {0.9,   1.0,   1.1,   1.0,   1.0}  },
+        {16,   {1.0,   0.9,   1.1,   1.0,   1.0}  },
+        {17,   {1.0,   1.0,   1.1,   1.0,   0.9}  },
+        {18,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+        {19,   {1.0,   1.0,   1.1,   0.9,   1.0}  },
+        {20,   {0.9,   1.0,   1.0,   1.1,   1.0}  },
+        {21,   {1.0,   0.9,   1.0,   1.1,   1.0}  },
+        {22,   {1.0,   1.0,   1.0,   1.1,   0.9}  },
+        {23,   {1.0,   1.0,   0.9,   1.1,   1.0}  },
+        {24,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+};
+
 const Pokemon pokemon[151] = {
     { 1, "Bulbasaur", {45, 49, 49, 65, 65, 45}, F1M7, "Overgrow", "Overgrow" },
     { 2, "Ivysaur", {60, 62, 63, 80, 80, 60}, F1M7, "Overgrow", "Overgrow" },
@@ -304,7 +333,7 @@ get_gender(uint32_t PID, GenderRatio gr) {
 
 // https://bulbapedia.bulbagarden.net/wiki/Hidden_Power_(move)/Calculation
 uint8_t
-get_hp_value(uint8_t *IVs) {
+get_hp_value(const uint8_t *IVs) {
     int sum = 0;
     int i, j;
     for (i = 0, j = 1; i < 3; i++, j *= 2) {
@@ -318,7 +347,7 @@ get_hp_value(uint8_t *IVs) {
 }
 
 uint8_t
-get_hp_power(uint8_t *IVs) {
+get_hp_power(const uint8_t *IVs) {
     int sum = 0;
     int i, j;
     for (i = 0, j = 1; i < 3; i++, j *= 2) {
@@ -359,4 +388,13 @@ unown_symbols(int val) {
         }
     } else
         return (char)(val + 65);
+}
+
+void
+calculate_stat_totals(Pokemon mon, Nature nt, uint8_t level, const uint8_t *IVs, uint8_t stats[6]) {
+    int i;
+    stats[0] = (((2 * mon.base_stats[0] + IVs[0]) * level) / 100 ) + (level + 10);
+    for (i = 1; i < 6; i++) {
+        stats[i] = (((2 * mon.base_stats[i] + IVs[i]) * level / 100 ) + 5) * nature_mult_table[nt.key].mults[i - 1];
+    }
 }

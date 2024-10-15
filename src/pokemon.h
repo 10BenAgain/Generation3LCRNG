@@ -10,8 +10,8 @@ extern const char* encounter_category[];
 const char* get_nature_str(uint8_t key);
 const char* get_gender_str(uint8_t key);
 uint8_t is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
-uint8_t get_hp_value(uint8_t *IVs);
-uint8_t get_hp_power(uint8_t *IVs);
+uint8_t get_hp_value(const uint8_t *IVs);
+uint8_t get_hp_power(const uint8_t *IVs);
 uint8_t get_unown_shape(uint32_t PID);
 char unown_symbols(int val);
 
@@ -40,7 +40,7 @@ uint8_t get_gender(uint32_t PID, GenderRatio gr);
 typedef struct {
     uint32_t dex;
     const char* name;
-    uint8_t base_IVs[6];
+    uint8_t base_stats[6];
     GenderRatio gr;
     const char *ab0;
     const char *ab1;
@@ -63,9 +63,16 @@ typedef struct {
     int level;
 } Encounter;
 
+typedef struct {
+    int key;
+    double mults[5];
+} NatureMult;
+
 extern const Nature natures[25];
 extern const Pokemon pokemon[151];
 extern const Encounter StaticEncounters[];
 extern const HiddenPower HP[16];
+
+void calculate_stat_totals(Pokemon mon, Nature nt, uint8_t level, const uint8_t *IVs, uint8_t stats[6]);
 
 #endif
