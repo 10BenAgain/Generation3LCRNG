@@ -413,13 +413,13 @@ uint8_t* get_iv_range(int level, Nature nature, int base_stat, int stat_total, i
         }
 
     } else {
-        float nature_mult = nature_mult_table[nature.key].mults[stat_num];
+        float nature_mult = nature_mult_table[nature.key].mults[stat_num - 1];
         lower_bound = ((stat_total/nature_mult - 5.0) * 100.0) / level - 2.0*base_stat - ev/4.0;
         upper_bound = lower_bound;
         temp_stat_total = stat_total = (((2.0*base_stat + upper_bound + 1 + ev/4.0) * level) / 100.0 + 5.0) * nature_mult;
         for (i = lower_bound; temp_stat_total == stat_total; i++){
             upper_bound++;
-            temp_stat_total = stat_total = (((2.0*base_stat + upper_bound + 1 + ev/4.0) * level) / 100.0 + 5.0) * nature_mult;
+            temp_stat_total = (((2.0*base_stat + upper_bound + 1 + ev/4.0) * level) / 100.0 + 5.0) * nature_mult;
         }
     }
     ivs[0] = lower_bound;

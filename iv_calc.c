@@ -11,7 +11,7 @@ int main(int argc, char ** argv) {
     }
 
     int level = strtol(argv[1], NULL, 10);
-    Nature nature = natures[strtol(argv[1], NULL, 10)];
+    Nature nature = natures[strtol(argv[2], NULL, 10)];
     int base_stat = strtol(argv[3], NULL, 10);
     int stat_total = strtol(argv[4], NULL, 10);
     int stat_num = strtol(argv[5], NULL, 10);
