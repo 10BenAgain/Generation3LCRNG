@@ -71,32 +71,32 @@ const Nature natures[25] = {
 };
 
 /* ATK/DEF/SPA/SPD/SPE */
-const NatureMult nature_mult_table[25] = {
-        { 0,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
-        { 1,   {1.1,   0.9,   1.0,   1.0,   1.0}  },
-        { 2,   {1.1,   1.0,   1.0,   1.0,   0.9}  },
-        { 3,   {1.1,   1.0,   0.9,   1.0,   1.0}  },
-        { 4,   {1.1,   1.0,   1.0,   0.9,   1.0}  },
-        { 5,   {0.9,   1.1,   1.0,   1.0,   1.0}  },
-        { 6,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
-        { 7,   {1.0,   1.1,   1.0,   1.0,   0.9}  },
-        { 8,   {1.0,   1.1,   0.9,   1.0,   1.0}  },
-        { 9,   {1.0,   1.1,   1.0,   0.9,   1.0}  },
-        {10,   {0.9,   1.0,   1.0,   1.0,   1.1}  },
-        {11,   {1.0,   0.9,   1.0,   1.0,   1.1}  },
-        {12,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
-        {13,   {1.0,   1.0,   0.9,   1.0,   1.1}  },
-        {14,   {1.0,   1.0,   1.0,   0.9,   1.1}  },
-        {15,   {0.9,   1.0,   1.1,   1.0,   1.0}  },
-        {16,   {1.0,   0.9,   1.1,   1.0,   1.0}  },
-        {17,   {1.0,   1.0,   1.1,   1.0,   0.9}  },
-        {18,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
-        {19,   {1.0,   1.0,   1.1,   0.9,   1.0}  },
-        {20,   {0.9,   1.0,   1.0,   1.1,   1.0}  },
-        {21,   {1.0,   0.9,   1.0,   1.1,   1.0}  },
-        {22,   {1.0,   1.0,   1.0,   1.1,   0.9}  },
-        {23,   {1.0,   1.0,   0.9,   1.1,   1.0}  },
-        {24,   {1.0,   1.0,   1.0,   1.0,   1.0}  },
+const double nature_multiplier_table[25][5] = {
+    {1.0,   1.0,   1.0,   1.0,   1.0},
+    {1.1,   0.9,   1.0,   1.0,   1.0},
+    {1.1,   1.0,   1.0,   1.0,   0.9},
+    {1.1,   1.0,   0.9,   1.0,   1.0},
+    {1.1,   1.0,   1.0,   0.9,   1.0},
+    {0.9,   1.1,   1.0,   1.0,   1.0},
+    {1.0,   1.0,   1.0,   1.0,   1.0},
+    {1.0,   1.1,   1.0,   1.0,   0.9},
+    {1.0,   1.1,   0.9,   1.0,   1.0},
+    {1.0,   1.1,   1.0,   0.9,   1.0},
+    {0.9,   1.0,   1.0,   1.0,   1.1},
+    {1.0,   0.9,   1.0,   1.0,   1.1},
+    {1.0,   1.0,   1.0,   1.0,   1.0},
+    {1.0,   1.0,   0.9,   1.0,   1.1},
+    {1.0,   1.0,   1.0,   0.9,   1.1},
+    {0.9,   1.0,   1.1,   1.0,   1.0},
+    {1.0,   0.9,   1.1,   1.0,   1.0},
+    {1.0,   1.0,   1.1,   1.0,   0.9},
+    {1.0,   1.0,   1.0,   1.0,   1.0},
+    {1.0,   1.0,   1.1,   0.9,   1.0},
+    {0.9,   1.0,   1.0,   1.1,   1.0},
+    {1.0,   0.9,   1.0,   1.1,   1.0},
+    {1.0,   1.0,   1.0,   1.1,   0.9},
+    {1.0,   1.0,   0.9,   1.1,   1.0},
+    {1.0,   1.0,   1.0,   1.0,   1.0},
 };
 
 const Pokemon pokemon[151] = {
@@ -111,46 +111,46 @@ const Pokemon pokemon[151] = {
     { 9, "Blastoise", {79, 83, 100, 85, 105, 78}, F1M7, "Torrent", "Torrent" },
     { 10, "Caterpie", {45, 30, 35, 20, 20, 45}, F1M1, "Shield Dust", "Shield Dust" },
     { 11, "Metapod", {50, 20, 55, 25, 25, 30}, F1M1, "Shed Skin", "Shed Skin" },
-    { 12, "Butterfree", {60, 45, 50, 90, 80, 70}, F1M1, "Compound Eyes", "Compound Eyes" },
+    { 12, "Butterfree", {60, 45, 50, 80, 80, 70}, F1M1, "Compound Eyes", "Compound Eyes" },
     { 13, "Weedle", {40, 35, 30, 20, 20, 50}, F1M1, "Shield Dust", "Shield Dust" },
     { 14, "Kakuna", {45, 25, 50, 25, 25, 35}, F1M1, "Shed Skin", "Shed Skin" },
-    { 15, "Beedrill", {65, 90, 40, 45, 80, 75}, F1M1, "Swarm", "Swarm" },
+    { 15, "Beedrill", {65, 80, 40, 45, 80, 75}, F1M1, "Swarm", "Swarm" },
     { 16, "Pidgey", {40, 45, 40, 35, 35, 56}, F1M1, "Keen Eye", "Tangled Feet" },
     { 17, "Pidgeotto", {63, 60, 55, 50, 50, 71}, F1M1, "Keen Eye", "Tangled Feet" },
-    { 18, "Pidgeot", {83, 80, 75, 70, 70, 101}, F1M1, "Keen Eye", "Tangled Feet" },
+    { 18, "Pidgeot", {83, 80, 75, 70, 70, 91}, F1M1, "Keen Eye", "Tangled Feet" },
     { 19, "Rattata", {30, 56, 35, 25, 35, 72}, F1M1, "Run Away", "Guts" },
     { 20, "Raticate", {55, 81, 60, 50, 70, 97}, F1M1, "Run Away", "Guts" },
     { 21, "Spearow", {40, 60, 30, 31, 31, 70}, F1M1, "Keen Eye", "Keen Eye" },
     { 22, "Fearow", {65, 90, 65, 61, 61, 100}, F1M1, "Keen Eye", "Keen Eye" },
     { 23, "Ekans", {35, 60, 44, 40, 54, 55}, F1M1, "Intimidate", "Shed Skin" },
-    { 24, "Arbok", {60, 95, 69, 65, 79, 80}, F1M1, "Intimidate", "Shed Skin" },
-    { 25, "Pikachu", {35, 55, 40, 50, 50, 90}, F1M1, "Static", "Static" },
-    { 26, "Raichu", {60, 90, 55, 90, 80, 110}, F1M1, "Static", "Static" },
+    { 24, "Arbok", {60, 85, 69, 65, 79, 80}, F1M1, "Intimidate", "Shed Skin" },
+    { 25, "Pikachu", {35, 55, 30, 50, 40, 90}, F1M1, "Static", "Static" },
+    { 26, "Raichu", {60, 90, 55, 90, 80, 100}, F1M1, "Static", "Static" },
     { 27, "Sandshrew", {50, 75, 85, 20, 30, 40}, F1M1, "Sand Veil", "Sand Veil" },
     { 28, "Sandslash", {75, 100, 110, 45, 55, 65}, F1M1, "Sand Veil", "Sand Veil" },
     { 29, "Nidoran-f", {55, 47, 52, 40, 40, 41}, FemaleOnly, "Poison Point", "Rivalry" },
     { 30, "Nidorina", {70, 62, 67, 55, 55, 56}, FemaleOnly, "Poison Point", "Rivalry" },
-    { 31, "Nidoqueen", {90, 92, 87, 75, 85, 76}, FemaleOnly, "Poison Point", "Rivalry" },
+    { 31, "Nidoqueen", {90, 82, 87, 75, 85, 76}, FemaleOnly, "Poison Point", "Rivalry" },
     { 32, "Nidoran-m", {46, 57, 40, 40, 40, 50}, MaleOnly, "Poison Point", "Rivalry" },
     { 33, "Nidorino", {61, 72, 57, 55, 55, 65}, MaleOnly, "Poison Point", "Rivalry" },
-    { 34, "Nidoking", {81, 102, 77, 85, 75, 85}, MaleOnly, "Poison Point", "Rivalry" },
+    { 34, "Nidoking", {81, 92, 77, 85, 75, 85}, MaleOnly, "Poison Point", "Rivalry" },
     { 35, "Clefairy", {70, 45, 48, 60, 65, 35}, F3M1, "Cute Charm", "Magic Guard" },
-    { 36, "Clefable", {95, 70, 73, 95, 90, 60}, F3M1, "Cute Charm", "Magic Guard" },
+    { 36, "Clefable", {95, 70, 73, 85, 90, 60}, F3M1, "Cute Charm", "Magic Guard" },
     { 37, "Vulpix", {38, 41, 40, 50, 65, 65}, F3M1, "Flash Fire", "Flash Fire" },
     { 38, "Ninetales", {73, 76, 75, 81, 100, 100}, F3M1, "Flash Fire", "Flash Fire" },
     { 39, "Jigglypuff", {115, 45, 20, 45, 25, 20}, F3M1, "Cute Charm", "Competitive" },
-    { 40, "Wigglytuff", {140, 70, 45, 85, 50, 45}, F3M1, "Cute Charm", "Competitive" },
+    { 40, "Wigglytuff", {140, 70, 45, 75, 50, 45}, F3M1, "Cute Charm", "Competitive" },
     { 41, "Zubat", {40, 45, 35, 30, 40, 55}, F1M1, "Inner Focus", "Inner Focus" },
     { 42, "Golbat", {75, 80, 70, 65, 75, 90}, F1M1, "Inner Focus", "Inner Focus" },
     { 43, "Oddish", {45, 50, 55, 75, 65, 30}, F1M1, "Chlorophyll", "Chlorophyll" },
     { 44, "Gloom", {60, 65, 70, 85, 75, 40}, F1M1, "Chlorophyll", "Chlorophyll" },
-    { 45, "Vileplume", {75, 80, 85, 110, 90, 50}, F1M1, "Chlorophyll", "Chlorophyll" },
+    { 45, "Vileplume", {75, 80, 85, 100, 90, 50}, F1M1, "Chlorophyll", "Chlorophyll" },
     { 46, "Paras", {35, 70, 55, 45, 55, 25}, F1M1, "Effect Spore", "Dry Skin" },
     { 47, "Parasect", {60, 95, 80, 60, 80, 30}, F1M1, "Effect Spore", "Dry Skin" },
     { 48, "Venonat", {60, 55, 50, 40, 55, 45}, F1M1, "Compound Eyes", "Tinted Lens" },
     { 49, "Venomoth", {70, 65, 60, 90, 75, 90}, F1M1, "Shield Dust", "Tinted Lens" },
     { 50, "Diglett", {10, 55, 25, 35, 45, 95}, F1M1, "Sand Veil", "Arena Trap" },
-    { 51, "Dugtrio", {35, 100, 50, 50, 70, 120}, F1M1, "Sand Veil", "Arena Trap" },
+    { 51, "Dugtrio", {35, 80, 50, 50, 70, 120}, F1M1, "Sand Veil", "Arena Trap" },
     { 52, "Meowth", {40, 45, 35, 40, 40, 90}, F1M1, "Pickup", "Technician" },
     { 53, "Persian", {65, 70, 60, 65, 65, 115}, F1M1, "Limber", "Technician" },
     { 54, "Psyduck", {50, 52, 48, 65, 50, 55}, F1M1, "Damp", "Cloud Nine" },
@@ -161,16 +161,16 @@ const Pokemon pokemon[151] = {
     { 59, "Arcanine", {90, 110, 80, 100, 80, 95}, F1M3, "Intimidate", "Flash Fire" },
     { 60, "Poliwag", {40, 50, 40, 40, 40, 90}, F1M1, "Water Absorb", "Damp" },
     { 61, "Poliwhirl", {65, 65, 65, 50, 50, 90}, F1M1, "Water Absorb", "Damp" },
-    { 62, "Poliwrath", {90, 95, 95, 70, 90, 70}, F1M1, "Water Absorb", "Damp" },
+    { 62, "Poliwrath", {90, 85, 95, 70, 90, 70}, F1M1, "Water Absorb", "Damp" },
     { 63, "Abra", {25, 20, 15, 105, 55, 90}, F1M3, "Synchronize", "Inner Focus" },
     { 64, "Kadabra", {40, 35, 30, 120, 70, 105}, F1M3, "Synchronize", "Inner Focus" },
-    { 65, "Alakazam", {55, 50, 45, 135, 95, 120}, F1M3, "Synchronize", "Inner Focus" },
+    { 65, "Alakazam", {55, 50, 45, 135, 85, 120}, F1M3, "Synchronize", "Inner Focus" },
     { 66, "Machop", {70, 80, 50, 35, 35, 35}, F1M3, "Guts", "No Guard" },
     { 67, "Machoke", {80, 100, 70, 50, 60, 45}, F1M3, "Guts", "No Guard" },
     { 68, "Machamp", {90, 130, 80, 65, 85, 55}, F1M3, "Guts", "No Guard" },
     { 69, "Bellsprout", {50, 75, 35, 70, 30, 40}, F1M1, "Chlorophyll", "Chlorophyll" },
     { 70, "Weepinbell", {65, 90, 50, 85, 45, 55}, F1M1, "Chlorophyll", "Chlorophyll" },
-    { 71, "Victreebel", {80, 105, 65, 100, 70, 70}, F1M1, "Chlorophyll", "Chlorophyll" },
+    { 71, "Victreebel", {80, 105, 65, 100, 60, 70}, F1M1, "Chlorophyll", "Chlorophyll" },
     { 72, "Tentacool", {40, 40, 35, 50, 100, 70}, F1M1, "Clear Body", "Liquid Ooze" },
     { 73, "Tentacruel", {80, 70, 65, 80, 120, 100}, F1M1, "Clear Body", "Liquid Ooze" },
     { 74, "Geodude", {40, 80, 100, 30, 30, 20}, F1M1, "Rock Head", "Sturdy" },
@@ -182,9 +182,9 @@ const Pokemon pokemon[151] = {
     { 80, "Slowbro", {95, 75, 110, 100, 80, 30}, F1M1, "Oblivious", "Own Tempo" },
     { 81, "Magnemite", {25, 35, 70, 95, 55, 45}, Unknown, "Magnet Pull", "Sturdy" },
     { 82, "Magneton", {50, 60, 95, 120, 70, 70}, Unknown, "Magnet Pull", "Sturdy" },
-    { 83, "Farfetchd", {52, 90, 55, 58, 62, 60}, F1M1, "Keen Eye", "Inner Focus" },
+    { 83, "Farfetchd", {52, 65, 55, 58, 62, 60}, F1M1, "Keen Eye", "Inner Focus" },
     { 84, "Doduo", {35, 85, 45, 35, 35, 75}, F1M1, "Run Away", "Early Bird" },
-    { 85, "Dodrio", {60, 110, 70, 60, 60, 110}, F1M1, "Run Away", "Early Bird" },
+    { 85, "Dodrio", {60, 110, 70, 60, 60, 100}, F1M1, "Run Away", "Early Bird" },
     { 86, "Seel", {65, 45, 55, 45, 70, 45}, F1M1, "Thick Fat", "Hydration" },
     { 87, "Dewgong", {90, 70, 80, 70, 95, 70}, F1M1, "Thick Fat", "Hydration" },
     { 88, "Grimer", {80, 80, 50, 40, 50, 25}, F1M1, "Stench", "Sticky Hold" },
@@ -200,9 +200,9 @@ const Pokemon pokemon[151] = {
     { 98, "Krabby", {30, 105, 90, 25, 25, 50}, F1M1, "Hyper Cutter", "Shell Armor" },
     { 99, "Kingler", {55, 130, 115, 50, 50, 75}, F1M1, "Hyper Cutter", "Shell Armor" },
     { 100, "Voltorb", {40, 30, 50, 55, 55, 100}, Unknown, "Soundproof", "Static" },
-    { 101, "Electrode", {60, 50, 70, 80, 80, 150}, Unknown, "Soundproof", "Static" },
+    { 101, "Electrode", {60, 50, 70, 80, 80, 140}, Unknown, "Soundproof", "Static" },
     { 102, "Exeggcute", {60, 40, 80, 60, 45, 40}, F1M1, "Chlorophyll", "Chlorophyll" },
-    { 103, "Exeggutor", {95, 95, 85, 125, 75, 55}, F1M1, "Chlorophyll", "Chlorophyll" },
+    { 103, "Exeggutor", {95, 95, 85, 125, 65, 55}, F1M1, "Chlorophyll", "Chlorophyll" },
     { 104, "Cubone", {50, 50, 95, 40, 50, 35}, F1M1, "Rock Head", "Lightning Rod" },
     { 105, "Marowak", {60, 80, 110, 50, 80, 45}, F1M1, "Rock Head", "Lightning Rod" },
     { 106, "Hitmonlee", {50, 120, 53, 35, 110, 87}, MaleOnly, "Limber", "Reckless" },
@@ -395,6 +395,39 @@ calculate_stat_totals(Pokemon mon, Nature nt, uint8_t level, const uint8_t *IVs,
     int i;
     stats[0] = (((2 * mon.base_stats[0] + IVs[0]) * level) / 100 ) + (level + 10);
     for (i = 1; i < 6; i++) {
-        stats[i] = (((2 * mon.base_stats[i] + IVs[i]) * level / 100 ) + 5) * nature_mult_table[nt.key].mults[i - 1];
+        stats[i] = (((2 * mon.base_stats[i] + IVs[i]) * level / 100 ) + 5) * nature_multiplier_table[nt.key][i - 1];
+    }
+}
+
+uint16_t
+calculate_stat(uint16_t base_s, uint8_t iv, Nature nt, uint8_t level, uint8_t index) {
+    uint16_t stat = ((2 * base_s + iv) * level ) / 100;
+    if (index)
+        return (stat + 5) * nature_multiplier_table[nt.key][index - 1];
+
+    return stat + level + 10;
+}
+
+void
+get_iv_range(Pokemon mon, Nature nt, uint8_t level, uint16_t stat, uint8_t index, uint8_t result[32]) {
+    int i;
+    for (i = 0; i < 32; i++) {
+        uint16_t st = calculate_stat(mon.base_stats[index], i, nt, level, index);
+        if (st == stat) {
+            result[i] = i;
+        }
+    }
+}
+
+void
+get_all_stat_iv_range(Pokemon mon, Nature nt, uint8_t level, const uint16_t stats[6], int result[6][32]) {
+    int i, j;
+    for (i = 0; i < 6; i++) {
+        for (j = 0; j < 32; j ++) {
+            uint16_t st = calculate_stat(mon.base_stats[i], j, nt, level, i);
+            if (st == stats[i]) {
+                result[i][j] = j;
+            }
+        }
     }
 }
