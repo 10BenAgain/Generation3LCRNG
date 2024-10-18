@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include "encounter_table.h"
 
 /* Found by calculating the modular multiplicative inverse of the LCRNG prime numbers
  * We know that Next Seed = (a * Last Seed + C) % m
@@ -25,7 +26,12 @@
 
 void increment_seed(uint32_t *seed, uint32_t advances);
 void decrement_seed(uint32_t *seed, uint32_t advances);
+
 void method1_generate(uint32_t seed, uint32_t *PID, uint8_t *nature, uint8_t *ability, uint8_t *IVs);
+void method_h4_generate(uint32_t seed, uint32_t *PID, EncounterType et, uint8_t *encS, uint8_t *level, uint8_t *nature, uint8_t *ability, uint8_t *IVs);
+void method_h2_generate(uint32_t seed, uint32_t *PID, EncounterType et, uint8_t *encS, uint8_t *level, uint8_t *nature, uint8_t *ability, uint8_t *IVs);
+void method_h1_generate(uint32_t seed, uint32_t *PID, EncounterType et, uint8_t *encS, uint8_t *level, uint8_t *nature, uint8_t *ability, uint8_t *IVs);
+
 void check_seed(uint32_t *seed);
 
 uint32_t next_seed(const uint32_t *seed);

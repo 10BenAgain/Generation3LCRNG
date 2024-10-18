@@ -63,16 +63,10 @@ typedef struct {
     int level;
 } Encounter;
 
-typedef struct {
-    int key;
-    double mults[5];
-} NatureMult;
-
 extern const Nature natures[25];
 extern const Pokemon pokemon[151];
 extern const Encounter StaticEncounters[];
 extern const HiddenPower HP[16];
-
-void calculate_stat_totals(Pokemon mon, Nature nt, uint8_t level, const uint8_t *IVs, uint8_t stats[6]);
+extern const double nature_multiplier_table[25][5];
 
 #endif
