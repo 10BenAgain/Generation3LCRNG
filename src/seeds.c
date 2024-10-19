@@ -1,5 +1,39 @@
 #include "seeds.h"
 
+static const char optionFiles[14][18] = {
+        "Mono-HELP-A",
+        "Mono-HELP-Start",
+        "Mono-LA-A",
+        "Mono-LA-L",
+        "Mono-LA-Start",
+        "Mono-LR-A",
+        "Mono-LR-Start",
+        "Stereo-HELP-A",
+        "Stereo-HELP-Start",
+        "Stereo-LA-A",
+        "Stereo-LA-L",
+        "Stereo-LA-Start",
+        "Stereo-LR-A",
+        "Stereo-LR-Start"
+};
+
+static const OptionFileMap optionFileMappings[] = {
+        { MONO,     HELP,   A,      optionFiles[0] },
+        { MONO,     HELP,   START,  optionFiles[1] },
+        { MONO,     LA,     A,      optionFiles[2] },
+        { MONO,     LA,     L,      optionFiles[3] },
+        { MONO,     LA,     START,  optionFiles[4] },
+        { MONO,     LR,     A,      optionFiles[5] },
+        { MONO,     LR,     START,  optionFiles[6] },
+        { STEREO,   HELP,   A,      optionFiles[7] },
+        { STEREO,   HELP,   START,  optionFiles[8] },
+        { STEREO,   LA,     A,      optionFiles[9] },
+        { STEREO,   LA,     L,      optionFiles[10] },
+        { STEREO,   LA,     START,  optionFiles[11] },
+        { STEREO,   LR,     A,      optionFiles[12] },
+        { STEREO,   LR,     START,  optionFiles[13] },
+};
+
 // https://stackoverflow.com/questions/8465006/how-do-i-concatenate-two-strings-in-c
 const char
 *get_seed_path(const char *folder, const char *file) {
@@ -61,7 +95,6 @@ InitialSeed
 
     uint64_t count = 0;
     char line[MAX_TIMER_LENGTH + MAX_SEED_LENGTH + 2];
-    printf("Size of line = %llu\n", sizeof(line));
     while (fgets(line, sizeof(line), fp) && count < lc) {
         char *token = strtok(line, ",");
         if (token != NULL) {
@@ -80,6 +113,8 @@ InitialSeed
 
 const char
 *get_seed_file_path(GameVersion gv, AudioSetting audS, ButtonSetting btnS, ButtonSeed btn) {
+    char *LGpath = "data/LG/";
+    char *FRpath = "data/FR/";
     const char *path;
     const char *file;
 
