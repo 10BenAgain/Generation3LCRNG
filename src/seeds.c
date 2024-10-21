@@ -139,5 +139,43 @@ const char
     return get_seed_path(path, file);
 }
 
+uint64_t
+find_seed_index(InitialSeed *set, uint16_t seed, uint64_t length) {
+    if (set == NULL) return 0;
+
+    for (size_t i = 0; i < length; i++) {
+        if (set[i].seed == seed) {
+            return i;
+        }
+    }
+    return 0;
+}
+
+InitialSeed
+*get_seed_range(InitialSeed *set, uint16_t length, uint16_t index, uint16_t range, uint64_t *newLen) {
+    uint64_t start, end;
+
+    if (index - range > 0) {
+        start = index - range;
+    } else {
+        return NULL;
+    }
+
+    if ((index + range) <= length) {
+        end = index + range;
+    } else {
+        return NULL;
+    }
+
+    *newLen = end - start;
+    InitialSeed *seedR = malloc(*newLen * sizeof(InitialSeed));
+    if (seedR == NULL) {
+        free(seedR);
+        return NULL;
+    }
+    memcpy(seedR, &set[start], *newLen * sizeof(InitialSeed));
+    return seedR;
+}
+
 
 
