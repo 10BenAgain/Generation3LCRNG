@@ -1,6 +1,12 @@
 import csv
+import os
+import sys
 
-file_path = "lg_seeds.csv"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+data_dir = os.path.join(script_dir, '..', 'LG')
+sys.path.append(data_dir)
+
+file_path = "../raw/lg_seeds.csv"
 
 audio = ["Stereo", "Mono"]
 button_option = ["LA", "LR", "HELP"]
@@ -59,6 +65,6 @@ for _ in range(12):
                 opts.append(entry)
     seed_row += 1
 
-    with open(f"LG/{headers[0]}-{headers[1]}-{headers[2]}", 'w', newline='\n') as file:
+    with open(f"{data_dir}/{headers[0]}-{headers[1]}-{headers[2]}", 'w', newline='\n') as file:
         writer = csv.writer(file)
         writer.writerows(opts)

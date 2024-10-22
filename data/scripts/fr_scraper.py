@@ -1,6 +1,12 @@
 import csv
+import os
+import sys
 
-file_path = "fr_seeds.csv"
+file_path = "../raw/fr_seeds.csv"
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+data_dir = os.path.join(script_dir, '..', 'FR')
+sys.path.append(data_dir)
 
 audio = ["Stereo", "Mono"]
 button_option = ["LA", "LR", "HELP"]
@@ -52,6 +58,6 @@ for _ in range(14):
     timer_row += 5
     seed_row += 5
 
-    with open(f"FR/{headers[0][0]}-{headers[0][1]}-{headers[1]}", 'w', newline='\n') as file:
+    with open(f"{data_dir}//{headers[0][0]}-{headers[0][1]}-{headers[1]}", 'w', newline='\n') as file:
         writer = csv.writer(file)
         writer.writerows(opts)
