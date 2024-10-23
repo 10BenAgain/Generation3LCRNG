@@ -2,15 +2,7 @@
 #define ENCOUNTER_H
 
 #include <stdint.h>
-
-typedef enum {
-    Grass,
-    Water,
-    RockSmash,
-    OldRod,
-    GoodRod,
-    SuperRod
-} EncounterType;
+#include "enums.h"
 
 static const uint8_t
 grass_encounter_slot_lookup_table[100] = {
