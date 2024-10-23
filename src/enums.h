@@ -39,4 +39,18 @@ typedef enum {
     SuperRod
 } EncounterType;
 
+/*This sucks, but it should work for now until fishing is implemented in V3 OCR shite*/
+static EncounterType
+area2enc(AreaType at) {
+    switch (at) {
+        case LAND:
+            return Grass;
+        case WATER:
+            return Water;
+        case ROCKSMASH:
+            return RockSmash;
+        default:
+            return Grass;
+    }
+}
 #endif
