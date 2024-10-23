@@ -36,6 +36,8 @@ method1_generate(uint32_t seed, uint32_t *PID, uint8_t *nature, uint8_t *ability
          uint32_t seed,
          uint32_t *PID,
          EncounterType et,
+         Slot *slt,
+         uint8_t *mon,
          uint8_t *encS,
          uint8_t *level,
          uint8_t *nature,
@@ -48,7 +50,9 @@ method1_generate(uint32_t seed, uint32_t *PID, uint8_t *nature, uint8_t *ability
      *encS = get_enc_table(et)[nextUShort(100, current_seed)];
      increment_seed(&current_seed, 1);
 
-     // Level determined by encounter slot mon
+     *level = calculate_level(slt[*encS], current_seed);
+     *mon = slt[*encS].mon;
+
      increment_seed(&current_seed, 1); // Level Advance
 
      // Tanoby ruins will need to be added to calculation here as well
@@ -87,6 +91,8 @@ method_h2_generate(
         uint32_t seed,
         uint32_t *PID,
         EncounterType et,
+        Slot *slt,
+        uint8_t *mon,
         uint8_t *encS,
         uint8_t *level,
         uint8_t *nature,
@@ -99,7 +105,9 @@ method_h2_generate(
     *encS = get_enc_table(et)[nextUShort(100, current_seed)];
     increment_seed(&current_seed, 1);
 
-    // Level determined by encounter slot mon
+    *level = calculate_level(slt[*encS], current_seed);
+    *mon = slt[*encS].mon;
+
     increment_seed(&current_seed, 1); // Level Advance
 
     // Tanoby ruins will need to be added to calculation here as well
@@ -140,6 +148,8 @@ method_h1_generate(
         uint32_t seed,
         uint32_t *PID,
         EncounterType et,
+        Slot *slt,
+        uint8_t *mon,
         uint8_t *encS,
         uint8_t *level,
         uint8_t *nature,
@@ -148,17 +158,19 @@ method_h1_generate(
 
     uint32_t current_seed;
     current_seed = seed;
+
     *encS = get_enc_table(et)[nextUShort(100, current_seed)];
     increment_seed(&current_seed, 1);
 
-    // Level determined by encounter slot mon
+    *level = calculate_level(slt[*encS], current_seed);
+    *mon = slt[*encS].mon;
+
     increment_seed(&current_seed, 1); // Level Advance
 
     // Tanoby ruins will need to be added to calculation here as well
 
     increment_seed(&current_seed, 1);
     *nature = (current_seed >> 16) % 25;
-
     do
     {
         // PID re-roll https://docs.google.com/spreadsheets/d/1hCZznFa4cez3l2qx1DmYPbuB_dNGTqqCoaksZf-Q44s/edit?usp=sharing
@@ -204,6 +216,13 @@ decrement_seed(uint32_t *seed, uint32_t advances) {
         else
             break;
     }
+}
+
+uint8_t
+calculate_level(Slot s, uint32_t seed) {
+    uint8_t range = s.maxL - s.minL + 1;
+    uint8_t next = nextUShort(range, seed);
+    return s.minL + next;
 }
 
 uint32_t 

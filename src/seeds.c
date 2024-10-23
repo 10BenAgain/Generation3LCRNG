@@ -139,6 +139,7 @@ const char
     return get_seed_path(path, file);
 }
 
+/* Linear search is probably bad but w/e */
 uint64_t
 find_seed_index(InitialSeed *set, uint16_t seed, uint64_t length) {
     if (set == NULL) return 0;
