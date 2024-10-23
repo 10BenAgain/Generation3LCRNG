@@ -26,6 +26,7 @@ typedef struct {
 
 typedef struct {
     uint32_t PID;
+    uint8_t mon;
     uint8_t nature;
     uint8_t ability;
     uint8_t IVs[6];
@@ -37,8 +38,8 @@ typedef struct {
 } WildEncounter;
 
 StaticEncounter **generate_M1_encounter_array(Player pl, uint16_t mon, uint16_t seed, uint32_t init, uint32_t max);
-WildEncounter **generate_H1_encounter_array(Player pl, EncounterType et, uint16_t seed, uint32_t init, uint32_t max);
-WildEncounter **generate_H2_encounter_array(Player pl, EncounterType et, uint16_t seed, uint32_t init, uint32_t max);
-WildEncounter **generate_H4_encounter_array(Player pl, EncounterType et, uint16_t seed, uint32_t init, uint32_t max);
+WildEncounter **generate_H1_encounter_array(Player pl, AreaEntry aEntry, GameVersion gv, uint16_t seed, uint32_t init, uint32_t max);
+WildEncounter **generate_H2_encounter_array(Player pl, AreaEntry aEntry, GameVersion gv, uint16_t seed, uint32_t init, uint32_t max);
+WildEncounter **generate_H4_encounter_array(Player pl, AreaEntry aEntry, GameVersion gv, uint16_t seed, uint32_t init, uint32_t max);
 
 #endif

@@ -2,7 +2,8 @@
 #include "generator.h"
 
 // Creates an array of pointers to static encounter structs
-StaticEncounter **generate_M1_encounter_array(Player pl, uint16_t mon, uint16_t seed, uint32_t init, uint32_t max) {
+StaticEncounter
+**generate_M1_encounter_array(Player pl, uint16_t mon, uint16_t seed, uint32_t init, uint32_t max) {
     if (max <= 0)
         return NULL;
 
@@ -46,7 +47,7 @@ StaticEncounter **generate_M1_encounter_array(Player pl, uint16_t mon, uint16_t 
     return encounters;
 }
 
-WildEncounter **generate_H1_encounter_array(Player pl, EncounterType et, uint16_t seed, uint32_t init, uint32_t max) {
+WildEncounter **generate_H1_encounter_array(Player pl, AreaEntry aEntry, GameVersion gv, uint16_t seed, uint32_t init, uint32_t max) {
     if (max <= 0)
         return NULL;
 
@@ -63,6 +64,14 @@ WildEncounter **generate_H1_encounter_array(Player pl, EncounterType et, uint16_
         return NULL;
     }
 
+    const char *encounter_data_path = get_encounter_file_path(gv, aEntry.at);
+    Slot *slots = load_slots(aEntry, encounter_data_path);
+    if (slots == NULL) {
+        free(slots);
+        return NULL;
+    }
+
+    EncounterType et = area2enc(aEntry.at);
     current_seed = seed;
     int i, j;
     for (i = 0; i <= (int)advances; i++, increment_seed(&current_seed, 1)) {
@@ -78,13 +87,14 @@ WildEncounter **generate_H1_encounter_array(Player pl, EncounterType et, uint16_
                 current_seed,
                 &encounters[i]->PID,
                 et,
+                slots,
+                &encounters[i]->mon,
                 &encounters[i]->slot,
                 &encounters[i]->level,
                 &encounters[i]->nature,
                 &encounters[i]->ability,
                 encounters[i]->IVs
         );
-
         encounters[i]->shiny = is_shiny(encounters[i]->PID, pl.TID, pl.SID);
         encounters[i]->hp = HP[get_hp_value(encounters[i]->IVs)].type;
         encounters[i]->hp_pow = get_hp_power(encounters[i]->IVs);
@@ -92,7 +102,7 @@ WildEncounter **generate_H1_encounter_array(Player pl, EncounterType et, uint16_
     return encounters;
 }
 
-WildEncounter **generate_H2_encounter_array(Player pl, EncounterType et, uint16_t seed, uint32_t init, uint32_t max) {
+WildEncounter **generate_H2_encounter_array(Player pl, AreaEntry aEntry, GameVersion gv, uint16_t seed, uint32_t init, uint32_t max) {
     if (max <= 0)
         return NULL;
 
@@ -109,6 +119,14 @@ WildEncounter **generate_H2_encounter_array(Player pl, EncounterType et, uint16_
         return NULL;
     }
 
+    const char *encounter_data_path = get_encounter_file_path(gv, aEntry.at);
+    Slot *slots = load_slots(aEntry, encounter_data_path);
+    if (slots == NULL) {
+        free(slots);
+        return NULL;
+    }
+
+    EncounterType et = area2enc(aEntry.at);
     current_seed = seed;
     int i, j;
     for (i = 0; i <= (int)advances; i++, increment_seed(&current_seed, 1)) {
@@ -124,13 +142,14 @@ WildEncounter **generate_H2_encounter_array(Player pl, EncounterType et, uint16_
                 current_seed,
                 &encounters[i]->PID,
                 et,
+                slots,
+                &encounters[i]->mon,
                 &encounters[i]->slot,
                 &encounters[i]->level,
                 &encounters[i]->nature,
                 &encounters[i]->ability,
                 encounters[i]->IVs
         );
-
         encounters[i]->shiny = is_shiny(encounters[i]->PID, pl.TID, pl.SID);
         encounters[i]->hp = HP[get_hp_value(encounters[i]->IVs)].type;
         encounters[i]->hp_pow = get_hp_power(encounters[i]->IVs);
@@ -138,7 +157,7 @@ WildEncounter **generate_H2_encounter_array(Player pl, EncounterType et, uint16_
     return encounters;
 }
 
-WildEncounter **generate_H4_encounter_array(Player pl, EncounterType et, uint16_t seed, uint32_t init, uint32_t max) {
+WildEncounter **generate_H4_encounter_array(Player pl, AreaEntry aEntry, GameVersion gv, uint16_t seed, uint32_t init, uint32_t max) {
     if (max <= 0)
         return NULL;
 
@@ -155,6 +174,14 @@ WildEncounter **generate_H4_encounter_array(Player pl, EncounterType et, uint16_
         return NULL;
     }
 
+    const char *encounter_data_path = get_encounter_file_path(gv, aEntry.at);
+    Slot *slots = load_slots(aEntry, encounter_data_path);
+    if (slots == NULL) {
+        free(slots);
+        return NULL;
+    }
+
+    EncounterType et = area2enc(aEntry.at);
     current_seed = seed;
     int i, j;
     for (i = 0; i <= (int)advances; i++, increment_seed(&current_seed, 1)) {
@@ -170,6 +197,8 @@ WildEncounter **generate_H4_encounter_array(Player pl, EncounterType et, uint16_
                 current_seed,
                 &encounters[i]->PID,
                 et,
+                slots,
+                &encounters[i]->mon,
                 &encounters[i]->slot,
                 &encounters[i]->level,
                 &encounters[i]->nature,
