@@ -20,7 +20,7 @@ StaticEncounter
         return NULL;
     }
 
-    current_seed = seed;
+    current_seed = jump_ahead(Gen3JumpTable, seed, advances);
     int i, j;
     for (i = 0; i <= (int)advances; i++, increment_seed(&current_seed, 1)) {
         encounters[i] = (StaticEncounter *)malloc(sizeof(StaticEncounter));
@@ -72,7 +72,7 @@ WildEncounter **generate_H1_encounter_array(Player pl, AreaEntry aEntry, GameVer
     }
 
     EncounterType et = area2enc(aEntry.at);
-    current_seed = seed;
+    current_seed = jump_ahead(Gen3JumpTable, seed, advances);
     int i, j;
     for (i = 0; i <= (int)advances; i++, increment_seed(&current_seed, 1)) {
         encounters[i] = (WildEncounter *) malloc(sizeof(WildEncounter));
@@ -127,7 +127,7 @@ WildEncounter **generate_H2_encounter_array(Player pl, AreaEntry aEntry, GameVer
     }
 
     EncounterType et = area2enc(aEntry.at);
-    current_seed = seed;
+    current_seed = jump_ahead(Gen3JumpTable, seed, advances);
     int i, j;
     for (i = 0; i <= (int)advances; i++, increment_seed(&current_seed, 1)) {
         encounters[i] = (WildEncounter *) malloc(sizeof(WildEncounter));
@@ -182,7 +182,7 @@ WildEncounter **generate_H4_encounter_array(Player pl, AreaEntry aEntry, GameVer
     }
 
     EncounterType et = area2enc(aEntry.at);
-    current_seed = seed;
+    current_seed = jump_ahead(Gen3JumpTable, seed, init);
     int i, j;
     for (i = 0; i <= (int)advances; i++, increment_seed(&current_seed, 1)) {
         encounters[i] = (WildEncounter *) malloc(sizeof(WildEncounter));

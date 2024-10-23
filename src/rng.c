@@ -276,7 +276,6 @@ uint32_t
 jump_ahead(const Jump table[32], uint32_t seed, uint32_t advances) {
     int i;
     for (i = 0; advances; advances >>= 1, i++) {
-        printf("%d - %d\n", i, advances);
         if (advances & 1) {
             seed = seed * table[i].multiplier + table[i].add;
         }
