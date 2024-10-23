@@ -5,28 +5,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-
-typedef enum {
-    STEREO,
-    MONO
-} AudioSetting;
-
-typedef enum {
-    LA,
-    HELP,
-    LR
-} ButtonSetting;
-
-typedef enum {
-    A,
-    START,
-    L
-} ButtonSeed;
-
-typedef enum {
-    FR,
-    LG
-} GameVersion;
+#include "enums.h"
 
 typedef struct {
     uint32_t timer;
