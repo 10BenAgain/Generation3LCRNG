@@ -1,4 +1,4 @@
-#include "pokemon.h"
+#include "../include/pokemon.h"
 
 const char* gender_s[] = {
     "Male",

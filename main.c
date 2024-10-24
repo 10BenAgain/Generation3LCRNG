@@ -1,12 +1,70 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include "src/pokemon.h"
-#include "src/generator.h"
+#include "include/pokemon.h"
+#include "include/generator.h"
+#include "include/ivs.h"
+#include "include/seeds.h"
+#include "include/rng.h"
 
 void generate_m1_results();
 
 int main() {
+    Player pl;
+    AreaEntry aEntry;
+    GameVersion gv;
+    uint16_t seed;
+    uint32_t init;
+    uint32_t max;
+
+    pl.TID = 34437;
+    pl.SID = 44782;
+    aEntry = waterAreaMap[6];
+    gv = LG;
+    seed = 0xEE53;
+    init = 50;
+    max = 100;
+
+    WildEncounter **encs = generate_H4_encounter_array(pl, aEntry, gv, seed, init, max);
+
+    if (encs == NULL) {
+        printf("Memory allocation failed \n");
+        return 1;
+    }
+
+    int i, j;
+    for (i = 0; i < (int)(max - init); i++) {
+        Pokemon mon = pokemon[encs[i]->mon];
+        const char * ability;
+        if (encs[i]->ability) {
+            ability = mon.ab1;
+        }
+        else {
+            ability = mon.ab0;
+        }
+
+        printf("%d | ", i + init);
+        printf("Slot: %d |", encs[i]->slot);
+        printf("%s |", mon.name);
+        printf("%d |", encs[i]->level);
+        printf("%X | ", encs[i]->PID);
+        printf("%s | " , get_nature_str(encs[i]->nature));
+        printf("% d: %s |", encs[i]->ability, ability);
+        for (j = 0; j < 6; j++) {
+            printf("%d  ", encs[i]->IVs[j]);
+        }
+        printf("| %s ", shiny_types[encs[i]->shiny]);
+        printf("| %s ", encs[i]->hp);
+        printf("| %d ", encs[i]->hp_pow);
+
+        printf("| %s \n", get_gender_str(get_gender(encs[i]->PID, mon.gr)));
+    }
+
+    for (i = 0; i < (int)(max - init); i++) {
+        free(encs[i]);
+    }
+
+    free(encs);
 
     return 0;
 }
@@ -33,7 +91,7 @@ generate_m1_results() {
     printf("Enter pokemon number to generate: \n");
     scanf("%hd", &mon);
 
-    Static_e **encs = generate_encounter_array(player, mon, seed, 0, max);
+    StaticEncounter **encs = generate_M1_encounter_array(player, mon, seed, 0, max);
 
     if (encs == NULL) {
         printf("Memory allocation failed \n");

@@ -1,4 +1,4 @@
-#include "ivs.h"
+#include "../include/ivs.h"
 
 void
 calculate_stat_totals(Pokemon mon, Nature nt, uint8_t level, const uint8_t *IVs, uint8_t stats[6]) {

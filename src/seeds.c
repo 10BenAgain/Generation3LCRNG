@@ -1,4 +1,4 @@
-#include "seeds.h"
+#include "../include/seeds.h"
 
 static const char optionFiles[14][18] = {
         "Mono-HELP-A",
@@ -113,8 +113,8 @@ InitialSeed
 
 const char
 *get_seed_file_path(GameVersion gv, AudioSetting audS, ButtonSetting btnS, ButtonSeed btn) {
-    char *LGpath = "data/LG/";
-    char *FRpath = "data/FR/";
+    char *LGpath = "../data/LG/";
+    char *FRpath = "../data/FR/";
     const char *path;
     const char *file;
 

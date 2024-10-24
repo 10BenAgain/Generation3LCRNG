@@ -354,6 +354,6 @@ def create_all_files():
     read_write_rock_slots(fp_fr_smash, True)
     read_write_rock_slots(fp_lg_smash, False)
 
-
 if __name__ == '__main__':
     create_all_files()
+

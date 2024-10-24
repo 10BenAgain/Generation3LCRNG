@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "generator.h"
+#include "../include/generator.h"
 
 // Creates an array of pointers to static encounter structs
 StaticEncounter

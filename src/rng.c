@@ -1,4 +1,4 @@
-#include "rng.h"
+#include "../include/rng.h"
 
 void
 method1_generate(uint32_t seed, uint32_t *PID, uint8_t *nature, uint8_t *ability, uint8_t *IVs) {

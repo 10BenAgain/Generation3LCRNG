@@ -1,4 +1,4 @@
-#include "locations.h"
+#include "../include/locations.h"
 
 const char
 *get_enc_path(const char *folder, const char* file) {
@@ -22,8 +22,8 @@ const char
 
 const char
 *get_encounter_file_path(GameVersion gv, AreaType at) {
-    char *LGpath = "data/LGENCSLOTS/";
-    char *FRpath = "data/FRENCSLOTS/";
+    char *LGpath = "../data/LGENCSLOTS/";
+    char *FRpath = "../data/FRENCSLOTS/";
     const char *path;
     const char *file;
 
