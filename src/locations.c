@@ -1,5 +1,11 @@
 #include "../include/locations.h"
 
+const char* EncounterTypeStrings[3] = {
+        "Grass",
+        "Water",
+        "Rock Smash"
+};
+
 const char
 *get_enc_path(const char *folder, const char* file) {
     char *result = NULL;
