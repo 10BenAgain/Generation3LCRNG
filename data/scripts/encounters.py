@@ -354,6 +354,25 @@ def create_all_files():
     read_write_rock_slots(fp_fr_smash, True)
     read_write_rock_slots(fp_lg_smash, False)
 
+
+def write_land_slot_C(file_path):
+
+    with open(file_path, mode='r') as f:
+        csf = csv.reader(f)
+        next(csf, None)
+        count = 0
+        for row in csf:
+            output = '{ ' + "ROCKSMASH, " + '"' + row[0] + '"' + ', ' + str(count) + ' },'
+            count += 1
+            print(output)
+
 if __name__ == '__main__':
-    create_all_files()
+    #create_all_files()
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, '..', 'raw')
+    sys.path.append(data_dir)
+
+    fp_lg_land = os.path.join(data_dir, 'lgrockenc.csv')
+    write_land_slot_C(fp_lg_land)
 

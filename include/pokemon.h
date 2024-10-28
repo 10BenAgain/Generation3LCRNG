@@ -3,12 +3,13 @@
 
 #include <stdint.h>
 
-extern const char* gender_s[];
-extern const char* shiny_types[];
-extern const char* encounter_category[];
+extern const char* gender_s[3];
+extern const char* shiny_types[3];
+extern const char* encounter_category[8];
 
 const char* get_nature_str(uint8_t key);
 const char* get_gender_str(uint8_t key);
+
 uint8_t is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
 uint8_t get_hp_value(const uint8_t *IVs);
 uint8_t get_hp_power(const uint8_t *IVs);
@@ -68,5 +69,6 @@ extern const Pokemon pokemon[252];
 extern const Encounter StaticEncounters[];
 extern const HiddenPower HP[16];
 extern const double nature_multiplier_table[25][5];
+
 
 #endif

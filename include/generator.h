@@ -24,6 +24,7 @@ typedef struct {
     uint8_t shiny;
 } StaticEncounter;
 
+
 typedef struct {
     uint32_t PID;
     uint8_t mon;

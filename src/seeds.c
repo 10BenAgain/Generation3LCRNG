@@ -113,8 +113,13 @@ InitialSeed
 
 const char
 *get_seed_file_path(GameVersion gv, AudioSetting audS, ButtonSetting btnS, ButtonSeed btn) {
+#ifdef TEST
     char *LGpath = "../data/LG/";
     char *FRpath = "../data/FR/";
+#else
+    char *LGpath = "data/LG/";
+    char *FRpath = "data/FR/";
+#endif
     const char *path;
     const char *file;
 

@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdio.h>
 #include "encounter_table.h"
 #include "locations.h"
 

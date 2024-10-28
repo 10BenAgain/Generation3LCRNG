@@ -1,0 +1,1 @@
+/ucrt64/bin/cc.exe -Wl,--enable-auto-import CMakeFiles/bin.dir/main.c.o CMakeFiles/bin.dir/src/generator.c.o CMakeFiles/bin.dir/src/ivs.c.o CMakeFiles/bin.dir/src/locations.c.o CMakeFiles/bin.dir/src/pokemon.c.o CMakeFiles/bin.dir/src/rng.c.o CMakeFiles/bin.dir/src/seeds.c.o -o bin.exe -Wl,--out-implib,libbin.dll.a -Wl,--major-image-version,0,--minor-image-version,0

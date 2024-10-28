@@ -1,18 +1,18 @@
 #include "../include/pokemon.h"
 
-const char* gender_s[] = {
+const char* gender_s[3] = {
     "Male",
     "Female",
     "None"
 };
 
-const char* shiny_types[] = {
+const char* shiny_types[3] = {
         "None",
         "Star",
         "Square"
 };
 
-const char* encounter_category[] = {
+const char* encounter_category[8] = {
         "Starter",
         "Fossil",
         "Gift",
@@ -389,7 +389,7 @@ const Encounter StaticEncounters[] = {
 
 const char* 
 get_nature_str(uint8_t key) {
-    if (key > sizeof(natures)/sizeof(natures[0]))
+    if (key > 25)
         return "Huh?!";
     return natures[key].name;
 }

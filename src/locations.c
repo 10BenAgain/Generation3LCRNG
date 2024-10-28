@@ -1,9 +1,9 @@
 #include "../include/locations.h"
 
 const char* EncounterTypeStrings[3] = {
-        "Grass",
-        "Water",
-        "Rock Smash"
+    "Grass",
+    "Water",
+    "Rock Smash"
 };
 
 const char
@@ -26,10 +26,15 @@ const char
     return result;
 }
 
-const char
-*get_encounter_file_path(GameVersion gv, AreaType at) {
+const char *get_encounter_file_path(GameVersion gv, AreaType at) {
+#ifdef BUILD_PATH
     char *LGpath = "../data/LGENCSLOTS/";
     char *FRpath = "../data/FRENCSLOTS/";
+#else
+    char *LGpath = "data/LGENCSLOTS/";
+    char *FRpath = "data/FRENCSLOTS/";
+#endif
+
     const char *path;
     const char *file;
 
@@ -52,8 +57,7 @@ const char
     return get_enc_path(path, file);
 }
 
-Slot
-*load_slots(AreaEntry area, const char *fn) {
+Slot *load_slots(AreaEntry area, const char *fn) {
     FILE *fp = NULL;
     fp = fopen(fn, "r");
     if (fp == NULL) return NULL;

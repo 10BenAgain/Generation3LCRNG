@@ -39,6 +39,7 @@ StaticEncounter
             &encounters[i]->ability,
             encounters[i]->IVs
         );
+
         encounters[i]->shiny = is_shiny(encounters[i]->PID, pl.TID, pl.SID);
         encounters[i]->gender = get_gender_str(get_gender(encounters[i]->PID, pokemon[mon].gr));
         encounters[i]->hp = HP[get_hp_value(encounters[i]->IVs)].type;
