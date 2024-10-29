@@ -7,13 +7,8 @@
 #include "pokemon.h"
 #include "encounter_table.h"
 #include "generator.h"
-
-typedef enum {
-    M1,
-    H1,
-    H2,
-    H4
-} Method;
+#include "seeds.h"
+#include "enums.h"
 
 typedef struct SNode {
     StaticEncounter se;
@@ -48,5 +43,6 @@ void freeWEncList(wenc_node* head);
 void generate_m1_static(senc_node** list, Player pl, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max);
 
 void generateWildEncounter(wenc_node** list, Player pl, Method met, AreaEntry aEntry, GameVersion gv, WildFilter filter, uint32_t seed, uint32_t init, uint32_t max);
+void generateWildEncountersFromSeedList(wenc_node** list, Player pl, Method met, AreaEntry aEntry, GameVersion gv, WildFilter filter, InitialSeed *seeds, uint32_t size, uint32_t init, uint32_t max);
 
 #endif //GENERATION3LCRNG_FILTERS_H

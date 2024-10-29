@@ -67,6 +67,21 @@ void generate_m1_static(senc_node** list, Player pl, uint16_t mon, uint32_t seed
     }
 }
 
+void generateWildEncountersFromSeedList(wenc_node** list,
+                                        Player pl,
+                                        Method met,
+                                        AreaEntry aEntry,
+                                        GameVersion gv,
+                                        WildFilter filter,
+                                        InitialSeed *seeds,
+                                        uint32_t size,
+                                        uint32_t init,
+                                        uint32_t max) {
+    for (size_t i = 0; i < size; i ++) {
+        generateWildEncounter(list, pl, met, aEntry, gv, filter, seeds[i].seed, init, max);
+    }
+};
+
 void generateWildEncounter(
         wenc_node** list,
         Player pl,
@@ -87,6 +102,7 @@ void generateWildEncounter(
     if (advances <= 0) {
         return;
     }
+    uint32_t initial_seed = seed;
 
     const char *encounter_data_path = get_encounter_file_path(gv, aEntry.at);
     Slot *slots = load_slots(aEntry, encounter_data_path);
@@ -186,10 +202,12 @@ void generateWildEncounter(
         enc->hp = HP[get_hp_value(enc->IVs)].type;
         enc->hp_pow = get_hp_power(enc->IVs);
         enc->advances = i;
+        enc->seed = initial_seed;
 
         pushWenc(list, *enc);
     }
 }
+
 
 uint8_t
 ivFilterCheckWild(WildEncounter* we, WildFilter* filter) {
@@ -302,6 +320,7 @@ print_wencounter_list(wenc_node* enc) {
     c = 0;
     while(temp != NULL) {
         Pokemon m = pokemon[temp->we.mon];
+        printf("%X | ", temp->we.seed);
         printf("%d | ", temp->we.advances);
         printf("%s | ", m.name);
         printf("%d | ", temp->we.slot);
