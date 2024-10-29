@@ -411,10 +411,13 @@ is_shiny(uint32_t PID, uint32_t TID, uint32_t SID) {
     uint16_t psv = (TID ^ SID) ^ (PID >> 16) ^ (PID & 0xFFFF);
 
     if (psv == 0)
+        // Square
         return 2;
     else if (psv < 8)
+        // Star
         return 1;
     else
+        // None
         return 0;
 }
 

@@ -22,8 +22,8 @@ typedef struct {
     const char* hp;
     uint8_t hp_pow;
     uint8_t shiny;
+    uint32_t advances;
 } StaticEncounter;
-
 
 typedef struct {
     uint32_t PID;
@@ -36,6 +36,7 @@ typedef struct {
     const char* hp;
     uint8_t hp_pow;
     uint8_t shiny;
+    uint32_t advances;
 } WildEncounter;
 
 StaticEncounter **generate_M1_encounter_array(Player pl, uint16_t mon, uint16_t seed, uint32_t init, uint32_t max);
