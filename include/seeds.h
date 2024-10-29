@@ -12,14 +12,12 @@ typedef struct {
     uint16_t seed;
 } InitialSeed;
 
-
 typedef struct {
     AudioSetting audS;
     ButtonSetting btnS;
     ButtonSeed btn;
     const char *file;
 } OptionFileMap;
-
 
 #define MAX_TIMER_LENGTH 10
 #define MAX_SEED_LENGTH 10
