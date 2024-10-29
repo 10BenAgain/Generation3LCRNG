@@ -25,6 +25,13 @@ typedef enum {
 } GameVersion;
 
 typedef enum {
+    M1,
+    H1,
+    H2,
+    H4
+} Method;
+
+typedef enum {
     LAND,
     WATER,
     ROCKSMASH
