@@ -1,7 +1,9 @@
 # Personal files
 build/
 test/
+CMakeFiles/
 
 # Debugger + IDE nonsense
 .vscode/
 .idea/
+
