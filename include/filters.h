@@ -22,7 +22,7 @@ typedef struct WNode {
 
 typedef struct {
     uint8_t mon;
-    uint8_t ability; // 0 = 0, 1 = 1, 2 = Both
+    uint8_t ability[2]; // 0 = 0, 1 = 1
     uint8_t hp_iv_bounds[2];
     uint8_t atk_iv_bounds[2];
     uint8_t def_iv_bounds[2];
@@ -40,7 +40,7 @@ void print_wencounter_list(wenc_node* enc);
 void freeSEncList(senc_node* head);
 void freeWEncList(wenc_node* head);
 
-void generate_m1_static(senc_node** list, Player pl, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max);
+void generateStaticEncounter(senc_node** list, Player pl, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max);
 
 void generateWildEncounter(wenc_node** list, Player pl, Method met, AreaEntry aEntry, GameVersion gv, WildFilter filter, uint32_t seed, uint32_t init, uint32_t max);
 void generateWildEncountersFromSeedList(wenc_node** list, Player pl, Method met, AreaEntry aEntry, GameVersion gv, WildFilter filter, InitialSeed *seeds, uint32_t size, uint32_t init, uint32_t max);

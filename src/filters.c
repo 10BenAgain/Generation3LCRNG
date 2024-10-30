@@ -9,7 +9,7 @@ uint8_t genderFilterCheckWild(WildFilter* filter, uint8_t gender);
 uint8_t natureFilterCheckWild(WildFilter* filter, uint8_t nature);
 uint8_t shinyFilterCheckWild(WildFilter* filter, uint8_t shiny);
 
-void generate_m1_static(senc_node** list, Player pl, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max) {
+void generateStaticEncounter(senc_node** list, Player pl, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max) {
     if (max <= 0) {
         return;
     }
@@ -104,6 +104,7 @@ void generateWildEncounter(
     if (advances <= 0) {
         return;
     }
+
     uint32_t initial_seed = seed;
 
     const char *encounter_data_path = get_encounter_file_path(gv, aEntry.at);
@@ -209,7 +210,6 @@ void generateWildEncounter(
     }
 }
 
-
 uint8_t
 ivFilterCheckWild(WildEncounter* we, WildFilter* filter) {
     return (we->IVs[0] >= filter->hp_iv_bounds[0] && we->IVs[0] <= filter->hp_iv_bounds[1] &&
@@ -220,16 +220,9 @@ ivFilterCheckWild(WildEncounter* we, WildFilter* filter) {
         we->IVs[5] >= filter->spe_iv_bounds[0] && we->IVs[1] <= filter->spe_iv_bounds[1] );
 }
 
-/* If filter ability == 2 then filter doesn't care about which ability otherwise check which ability is requested*/
 uint8_t
-abilityFilterCheckWild( WildFilter* filter, uint8_t ability) {
-    if (filter->ability == 2)
-        return 1;
-
-    if (ability == filter->ability)
-        return 1;
-    else
-        return 0;
+abilityFilterCheckWild(WildFilter* filter, uint8_t ability) {
+   return (filter->ability[ability] == 1);
 }
 
 uint8_t
