@@ -24,7 +24,7 @@ typedef struct {
 
 const char *get_seed_file_path(GameVersion gv, AudioSetting audS, ButtonSetting btnS, ButtonSeed btn);
 InitialSeed *load_initial_seeds(const char *fn, uint64_t *len);
-uint64_t find_seed_index(InitialSeed *set, uint16_t seed, uint64_t length);
-InitialSeed *get_seed_range(InitialSeed *set, uint16_t length, uint16_t index, uint16_t range, uint64_t *newLen);
+uint64_t find_seed_index(InitialSeed *set, uint32_t seed, uint64_t length);
+InitialSeed *get_seed_range(InitialSeed *set, uint64_t length, uint16_t index, uint16_t range, uint64_t *newLen);
 
 #endif

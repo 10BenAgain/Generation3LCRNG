@@ -19,6 +19,7 @@ int main() {
     Pokemon mon = pokemon[20]; // Spearow
     Nature nat = natures[8]; // Impish
     uint8_t level = 13;
+    uint32_t target_seed = 0xE585;
 
     /* Declare the encounter type and the area where the encounter happens */
     EncounterType encT = Grass;
@@ -38,7 +39,7 @@ int main() {
     }
 
     /* Declare variable to store the amount of seeds that are going to be added to the seeds array*/
-    uint64_t len;
+    uint64_t len, s_len, index;
 
     /* Load the seed data based on the file path determined earlier */
     InitialSeed *seeds = load_initial_seeds(fp, &len);
@@ -48,6 +49,28 @@ int main() {
         free(seeds);
         return 1;
     }
+
+    /* Find the index of the target seed from the seed data file */
+    index = find_seed_index(seeds, target_seed, len);
+
+    if (index == 0) {
+        printf("Seed not found in data!");
+        return 1;
+    }
+
+    /* Declare and initialize the range of seeds to look thru (+/-) target index */
+    uint16_t range = 10;
+
+    /* Create an array of new seed structs from range input and copy the new range to s_len*/
+    InitialSeed *seedRange = get_seed_range(seeds, len, index, range, &s_len);
+    if(seedRange == NULL) {
+        printf("Failed to load new seed list");
+        free(seeds);
+        return 1;
+    }
+
+    /* Free the original total list of seeds */
+    free(seeds);
 
     /* Determine the encounter slot data path from game version and area*/
     const char *encounter_data_path = get_encounter_file_path(gv, at.at);
@@ -103,7 +126,7 @@ int main() {
     max = 1000;
 
     /* Generate some wild encounters */
-    generateWildEncountersFromSeedList(&head, player, H1, slots, encT, wf, seeds, len, init, max);
+    generateWildEncountersFromSeedList(&head, player, H1, slots, encT, wf, seedRange, s_len, init, max);
 
     /* Print results of generated encounters from linked list*/
     printWEncounterList(head);
@@ -114,7 +137,7 @@ int main() {
 
     /* Free all the memory that was created */
     freeWEncList(head);
-    free(seeds);
+    free(seedRange);
 
     return 0;
 }
