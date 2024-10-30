@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include "include/pokemon.h"
 #include "include/generator.h"
 #include "include/ivs.h"
@@ -10,79 +11,110 @@
 #include "include/filters.h"
 
 int main() {
+    /* Settings for target search */
     Player player;
-    uint32_t init, max;
-    uint32_t seed;
-    uint16_t mon;
-
-    wenc_node *head = NULL;
     player.SID = 34437;
-    player.TID = 44872;
-    init = 0;
-    max = 10000000;
-    seed = 0xEE53;
-    mon = 0;
-    AreaEntry at = landAreaMap[55];
+    player.TID = 44782;
+    GameVersion gv = LG;
+    Pokemon mon = pokemon[20]; // Spearow
+    Nature nat = natures[8]; // Impish
+    uint8_t level = 13;
+
+    /* Declare the encounter type and the area where the encounter happens */
+    EncounterType encT = Grass;
+    AreaEntry at = landAreaMap[55]; // Route 10
+
+    /*
+     * Create a path to the seed data based on the game version and in game settings
+     * gv = FR/LG
+     * MONO = audio setting
+     * LA = button setting
+     * Start = seed button
+    */
+    const char* fp = get_seed_file_path(gv, MONO, LA, START);
+    if (access(fp, F_OK)) {
+        printf("Data files missing or not loaded properly!\n");
+        return 1;
+    }
+
+    /* Declare variable to store the amount of seeds that are going to be added to the seeds array*/
+    uint64_t len;
+
+    /* Load the seed data based on the file path determined earlier */
+    InitialSeed *seeds = load_initial_seeds(fp, &len);
+
+    if(seeds == NULL) {
+        printf("Failed to load initial seed list");
+        free(seeds);
+        return 1;
+    }
+
+    /* Determine the encounter slot data path from game version and area*/
+    const char *encounter_data_path = get_encounter_file_path(gv, at.at);
+
+    /* Load slot data in Slot struct array based on input path determined earlier*/
+    Slot *slots = load_slots(at, encounter_data_path);
+
+    if (slots == NULL) {
+        printf("Failed to load encounter slots");
+        free(slots);
+        return 1;
+    }
+
+    /* Declare a filter struct with values to search for while generating encounters */
+    WildFilter wf = {
+            20,
+            {1, 1},
+            {0},
+            {0},
+            {0},
+            {0},
+            {0},
+            {0},
+            {1, 1, 0},
+            {0, 0, 1},
+            {0}
+    };
+
+    /* IV Estimator struct where our only known values are the total stat, nature, level, and mon*/
+    IVEstimate target = {
+            mon,
+            nat,
+            level,
+            {34, 20, 14, 12, 13, 24},
+            {0}
+    };
+
+    /* This is probably really stupid, but it sets the nature array to search values*/
+    applyNatureToWildFilter(nat, &wf);
+
+    /* Calculate the upper and lower bounds for each stat based on the estimate struct then add them into the filter*/
+    applyIVEstimateToWildFilter(&target, &wf);
 
     clock_t t;
     t = clock();
-    generateWildEncounter(&head, player, H1, at, LG, seed, init, max);
-    print_wencounter_list(head);
+
+    /* Create the head node of a linked list to add encounters to */
+    wenc_node *head = NULL;
+
+    /* Declare and initialize search parameters*/
+    uint32_t init, max;
+    init = 0;
+    max = 1000;
+
+    /* Generate some wild encounters */
+    generateWildEncountersFromSeedList(&head, player, H1, slots, encT, wf, seeds, len, init, max);
+
+    /* Print results of generated encounters from linked list*/
+    printWEncounterList(head);
+
     t = clock() - t;
     double time_taken = (double)t/CLOCKS_PER_SEC;
-    printf("Completed in %f seconds", time_taken);
+    printf("\nCompleted in %f seconds", time_taken);
+
+    /* Free all the memory that was created */
     freeWEncList(head);
+    free(seeds);
 
     return 0;
-}
-
-void
-generate_m1_results() {
-    Player player;
-    uint32_t max;
-    uint32_t seed;
-    uint16_t mon;
-
-    printf("Enter TID: \n");
-    scanf("%d", &player.TID);
-
-    printf("Enter SID: \n");
-    scanf("%d", &player.SID);
-
-    printf("Enter max advance: \n");
-    scanf("%d", &max);
-
-    printf("Enter staring seed: \n");
-    scanf("%X", &seed);
-
-    printf("Enter pokemon number to generate: \n");
-    scanf("%hd", &mon);
-
-    StaticEncounter **encs = generate_M1_encounter_array(player, mon, seed, 0, max);
-
-    if (encs == NULL) {
-        printf("Memory allocation failed \n");
-        return;
-    }
-
-    int i, j;
-    for (i = 0; i < (int)max; i++) {
-        printf("%d | ", i);
-        printf("%X | ", encs[i]->PID);
-        printf("%s | " , get_nature_str(encs[i]->nature));
-        printf("Ability: %X |", encs[i]->ability);
-        for (j = 0; j < 6; j++) {
-            printf("%d  ", encs[i]->IVs[j]);
-        }
-        printf("| %s ", shiny_types[encs[i]->shiny]);
-        printf("| %s ", encs[i]->hp);
-        printf("| %d ", encs[i]->hp_pow);
-        printf("| %s \n", encs[i]->gender);
-    }
-
-    for (i = 0; i < (int)max; i++) {
-        free(encs[i]);
-    }
-
-    free(encs);
 }
