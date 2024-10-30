@@ -1,5 +1,5 @@
-#ifndef GENERATION3LCRNG_FILTERS_H
-#define GENERATION3LCRNG_FILTERS_H
+#ifndef FILTERS_H
+#define FILTERS_H
 
 #include <stdio.h>
 #include <stdint.h>
@@ -9,6 +9,7 @@
 #include "generator.h"
 #include "seeds.h"
 #include "enums.h"
+#include "ivs.h"
 
 typedef struct SNode {
     StaticEncounter se;
@@ -34,8 +35,12 @@ typedef struct {
     uint8_t natures[25];
 } WildFilter;
 
-void print_sencounter_list(senc_node* enc);
-void print_wencounter_list(wenc_node* enc);
+void applyNatureToWildFilter(Nature nt, WildFilter* filter);
+
+void applyIVEstimateToWildFilter(IVEstimate* target, WildFilter* filter);
+
+void printSEncounterList(senc_node* enc);
+void printWEncounterList(wenc_node* enc);
 
 void freeSEncList(senc_node* head);
 void freeWEncList(wenc_node* head);
@@ -45,4 +50,4 @@ void generateStaticEncounter(senc_node** list, Player pl, uint16_t mon, uint32_t
 void generateWildEncounter( wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, uint32_t seed, uint32_t init, uint32_t max);
 void generateWildEncountersFromSeedList(wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, InitialSeed *seeds, uint32_t size, uint32_t init, uint32_t max);
 
-#endif //GENERATION3LCRNG_FILTERS_H
+#endif

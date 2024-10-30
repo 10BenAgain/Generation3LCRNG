@@ -80,7 +80,6 @@ void generateWildEncountersFromSeedList(
         uint32_t max) {
 
     for (size_t i = 0; i < size; i++) {
-        //printf("%d\n", seeds[i].seed);
         generateWildEncounter(list, pl, met, slots, et, filter, seeds[i].seed, init, max);
     }
 };
@@ -108,11 +107,11 @@ void generateWildEncounter(
 
     uint32_t initial_seed = seed;
 
-    uint32_t init_seed = jump_ahead(Gen3JumpTable, seed, init);
+    seed = jump_ahead(Gen3JumpTable, seed, init);
 
     int i;
-    for (i = 0; i <= (int)advances; i++, increment_seed(&init_seed, 1)) {
-        uint32_t current_seed = init_seed;
+    for (i = 0; i <= (int)advances; i++, increment_seed(&seed, 1)) {
+        uint32_t current_seed = seed;
 
         WildEncounter* enc = NULL;
         enc = (WildEncounter* )malloc(sizeof(WildEncounter));
@@ -199,10 +198,6 @@ void generateWildEncounter(
         enc->advances = i;
         enc->seed = initial_seed;
 
-        if (initial_seed == 0xE585) {
-            printf("Seed found\n");
-        }
-        //printf("%X\n", initial_seed);
         pushWenc(list, *enc);
     }
 }
@@ -275,7 +270,7 @@ pushWenc(wenc_node** h, WildEncounter enc) {
 }
 
 void
-print_sencounter_list(senc_node* enc) {
+printSEncounterList(senc_node* enc) {
     senc_node* temp = NULL;
     temp = enc;
 
@@ -297,7 +292,7 @@ print_sencounter_list(senc_node* enc) {
 }
 
 void
-print_wencounter_list(wenc_node* enc) {
+printWEncounterList(wenc_node* enc) {
     wenc_node* temp = NULL;
     temp = enc;
 
@@ -347,5 +342,28 @@ freeWEncList(wenc_node* head) {
         next = currentTemp->next;
         free(currentTemp);
         currentTemp = next;
+    }
+}
+
+void applyNatureToWildFilter(Nature nt, WildFilter* filter) { filter->natures[nt.key] = 1;}
+
+void applyIVEstimateToWildFilter(IVEstimate* target, WildFilter* filter) {
+    int i, l, u;
+    get_all_stat_iv_range(target);
+
+    /* An array of pointers that point to the start of the filter struct arrays... yeesh*/
+    uint8_t (*iv_bounds[6])[2] = {
+            &filter->hp_iv_bounds,
+            &filter->atk_iv_bounds,
+            &filter->def_iv_bounds,
+            &filter->spa_iv_bounds,
+            &filter->spd_iv_bounds,
+            &filter->spe_iv_bounds
+    };
+
+    for (i = 0; i < 6; i++ ){
+        find_bounds(target->rs[i], &l, &u);
+        iv_bounds[i][0][0] = (uint8_t)l;
+        iv_bounds[i][0][1] = (uint8_t)u;
     }
 }
