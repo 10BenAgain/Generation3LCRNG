@@ -67,16 +67,18 @@ void generate_m1_static(senc_node** list, Player pl, uint16_t mon, uint32_t seed
     }
 }
 
-void generateWildEncountersFromSeedList(wenc_node** list,
-                                        Player pl,
-                                        Method met,
-                                        AreaEntry aEntry,
-                                        GameVersion gv,
-                                        WildFilter filter,
-                                        InitialSeed *seeds,
-                                        uint32_t size,
-                                        uint32_t init,
-                                        uint32_t max) {
+void generateWildEncountersFromSeedList(
+        wenc_node** list,
+        Player pl,
+        Method met,
+        AreaEntry aEntry,
+        GameVersion gv,
+        WildFilter filter,
+        InitialSeed *seeds,
+        uint32_t size,
+        uint32_t init,
+        uint32_t max) {
+
     for (size_t i = 0; i < size; i ++) {
         generateWildEncounter(list, pl, met, aEntry, gv, filter, seeds[i].seed, init, max);
     }
@@ -130,7 +132,6 @@ void generateWildEncounter(
         enc->mon = slots[enc->slot].mon;
 
         if (!(enc->mon == filter.mon)){
-            //printf("Calculated mon: %d, Filtered mon: %d\n", enc->mon, filter.mon);
             free(enc);
             continue;
         }
@@ -247,13 +248,7 @@ shinyFilterCheckWild(WildFilter* filter, uint8_t shiny) {
 
 uint8_t
 natureFilterCheckWild(WildFilter* filter, uint8_t nature) {
-    int i;
-    for (i = 0; i < 25; i++ ) {
-        if (nature == i && filter->natures[i] == 1) {
-            return 1;
-        }
-    }
-    return 0;
+    return (filter->natures[nature] == 1);
 }
 
 void
