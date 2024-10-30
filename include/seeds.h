@@ -9,7 +9,7 @@
 
 typedef struct {
     uint32_t timer;
-    uint16_t seed;
+    uint32_t seed;
 } InitialSeed;
 
 typedef struct {

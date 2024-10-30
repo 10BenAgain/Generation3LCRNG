@@ -101,7 +101,7 @@ InitialSeed
             seeds[count].timer = (uint32_t)atoi(token);
             token = strtok(NULL, "\n");
             if (token != NULL) {
-                seeds[count].seed = (uint16_t)strtol(token, NULL, 16);
+                seeds[count].seed = (uint32_t)strtol(token, NULL, 16);
                 count++;
             }
         }

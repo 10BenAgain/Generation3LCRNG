@@ -71,16 +71,17 @@ void generateWildEncountersFromSeedList(
         wenc_node** list,
         Player pl,
         Method met,
-        AreaEntry aEntry,
-        GameVersion gv,
+        Slot *slots,
+        EncounterType et,
         WildFilter filter,
         InitialSeed *seeds,
         uint32_t size,
         uint32_t init,
         uint32_t max) {
 
-    for (size_t i = 0; i < size; i ++) {
-        generateWildEncounter(list, pl, met, aEntry, gv, filter, seeds[i].seed, init, max);
+    for (size_t i = 0; i < size; i++) {
+        //printf("%d\n", seeds[i].seed);
+        generateWildEncounter(list, pl, met, slots, et, filter, seeds[i].seed, init, max);
     }
 };
 
@@ -88,8 +89,8 @@ void generateWildEncounter(
         wenc_node** list,
         Player pl,
         Method met,
-        AreaEntry aEntry,
-        GameVersion gv,
+        Slot *slots,
+        EncounterType et,
         WildFilter filter,
         uint32_t seed,
         uint32_t init,
@@ -107,19 +108,11 @@ void generateWildEncounter(
 
     uint32_t initial_seed = seed;
 
-    const char *encounter_data_path = get_encounter_file_path(gv, aEntry.at);
-    Slot *slots = load_slots(aEntry, encounter_data_path);
-    if (slots == NULL) {
-        free(slots);
-        return;
-    }
-
-    EncounterType et = area2enc(aEntry.at);
-    seed = jump_ahead(Gen3JumpTable, seed, init);
+    uint32_t init_seed = jump_ahead(Gen3JumpTable, seed, init);
 
     int i;
-    for (i = 0; i <= (int)advances; i++, increment_seed(&seed, 1)) {
-        uint32_t current_seed = seed;
+    for (i = 0; i <= (int)advances; i++, increment_seed(&init_seed, 1)) {
+        uint32_t current_seed = init_seed;
 
         WildEncounter* enc = NULL;
         enc = (WildEncounter* )malloc(sizeof(WildEncounter));
@@ -206,6 +199,10 @@ void generateWildEncounter(
         enc->advances = i;
         enc->seed = initial_seed;
 
+        if (initial_seed == 0xE585) {
+            printf("Seed found\n");
+        }
+        //printf("%X\n", initial_seed);
         pushWenc(list, *enc);
     }
 }
@@ -214,10 +211,10 @@ uint8_t
 ivFilterCheckWild(WildEncounter* we, WildFilter* filter) {
     return (we->IVs[0] >= filter->hp_iv_bounds[0] && we->IVs[0] <= filter->hp_iv_bounds[1] &&
         we->IVs[1] >= filter->atk_iv_bounds[0] && we->IVs[1] <= filter->atk_iv_bounds[1] &&
-        we->IVs[2] >= filter->def_iv_bounds[0] && we->IVs[0] <= filter->def_iv_bounds[1] &&
-        we->IVs[3] >= filter->spa_iv_bounds[0] && we->IVs[1] <= filter->spa_iv_bounds[1] &&
-        we->IVs[4] >= filter->spd_iv_bounds[0] && we->IVs[0] <= filter->spd_iv_bounds[1] &&
-        we->IVs[5] >= filter->spe_iv_bounds[0] && we->IVs[1] <= filter->spe_iv_bounds[1] );
+        we->IVs[2] >= filter->def_iv_bounds[0] && we->IVs[2] <= filter->def_iv_bounds[1] &&
+        we->IVs[3] >= filter->spa_iv_bounds[0] && we->IVs[3] <= filter->spa_iv_bounds[1] &&
+        we->IVs[4] >= filter->spd_iv_bounds[0] && we->IVs[4] <= filter->spd_iv_bounds[1] &&
+        we->IVs[5] >= filter->spe_iv_bounds[0] && we->IVs[5] <= filter->spe_iv_bounds[1] );
 }
 
 uint8_t
@@ -315,7 +312,7 @@ print_wencounter_list(wenc_node* enc) {
         printf("%d | ", temp->we.level);
         printf("%X | ", temp->we.PID);
         printf("%s | ", get_nature_str(temp->we.nature));
-        printf("%s | ", (temp->we.ability) ? m.ab1 : m.ab0);
+        printf("%s (%d)| ", (temp->we.ability) ? m.ab1 : m.ab0, temp->we.ability);
 
         for (i = 0; i < 6; i ++) {
             printf("%d | ", temp->we.IVs[i]);

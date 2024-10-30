@@ -30,7 +30,7 @@ typedef struct {
     uint8_t spd_iv_bounds[2];
     uint8_t spe_iv_bounds[2];
     uint8_t gender[3]; // 0 = M , 1 = F, 2 = U
-    uint8_t shiny[4]; // 0 = Square, 1 = Star, 2 = None
+    uint8_t shiny[3]; // 0 = Square, 1 = Star, 2 = None
     uint8_t natures[25];
 } WildFilter;
 
@@ -42,7 +42,7 @@ void freeWEncList(wenc_node* head);
 
 void generateStaticEncounter(senc_node** list, Player pl, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max);
 
-void generateWildEncounter(wenc_node** list, Player pl, Method met, AreaEntry aEntry, GameVersion gv, WildFilter filter, uint32_t seed, uint32_t init, uint32_t max);
-void generateWildEncountersFromSeedList(wenc_node** list, Player pl, Method met, AreaEntry aEntry, GameVersion gv, WildFilter filter, InitialSeed *seeds, uint32_t size, uint32_t init, uint32_t max);
+void generateWildEncounter( wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, uint32_t seed, uint32_t init, uint32_t max);
+void generateWildEncountersFromSeedList(wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, InitialSeed *seeds, uint32_t size, uint32_t init, uint32_t max);
 
 #endif //GENERATION3LCRNG_FILTERS_H
