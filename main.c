@@ -86,7 +86,8 @@ int main() {
 
     /* Declare a filter struct with values to search for while generating encounters */
     WildFilter wf = {
-            20,
+            mon.dex - 1,
+            level,
             {1, 1},
             {0},
             {0},
@@ -123,7 +124,7 @@ int main() {
     /* Declare and initialize search parameters*/
     uint32_t init, max;
     init = 0;
-    max = 1000;
+    max = 100000;
 
     /* Generate some wild encounters */
     generateWildEncountersFromSeedList(&head, player, H1, slots, encT, wf, seedRange, s_len, init, max);
@@ -138,6 +139,7 @@ int main() {
     /* Free all the memory that was created */
     freeWEncList(head);
     free(seedRange);
+    free(slots);
 
     return 0;
 }

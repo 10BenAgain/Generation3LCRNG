@@ -146,7 +146,7 @@ const char
 
 /* Linear search is probably bad but w/e */
 uint64_t
-find_seed_index(InitialSeed *set, uint16_t seed, uint64_t length) {
+find_seed_index(InitialSeed *set, uint32_t seed, uint64_t length) {
     if (set == NULL) return 0;
 
     for (size_t i = 0; i < length; i++) {
@@ -158,19 +158,19 @@ find_seed_index(InitialSeed *set, uint16_t seed, uint64_t length) {
 }
 
 InitialSeed
-*get_seed_range(InitialSeed *set, uint16_t length, uint16_t index, uint16_t range, uint64_t *newLen) {
+*get_seed_range(InitialSeed *set, uint64_t length, uint16_t index, uint16_t range, uint64_t *newLen) {
     uint64_t start, end;
 
     if (index - range > 0) {
         start = index - range;
     } else {
-        return NULL;
+        start = 0;
     }
 
     if ((index + range) <= length) {
         end = index + range;
     } else {
-        return NULL;
+        end = length;
     }
 
     *newLen = end - start;

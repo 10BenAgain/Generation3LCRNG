@@ -122,6 +122,12 @@ void generateWildEncounter(
         enc->slot = get_enc_table(et)[nextUShort(100, current_seed)];
         increment_seed(&current_seed, 1);
         enc->level = calculate_level(slots[enc->slot], current_seed);
+
+        if (enc->level != filter.level) {
+            free(enc);
+            continue;
+        }
+
         enc->mon = slots[enc->slot].mon;
 
         if (!(enc->mon == filter.mon)){
