@@ -19,7 +19,7 @@ void generateStaticEncounterFromSeedList(
         uint32_t init,
         uint32_t max
         ) {
-    for (size_t i = 0; i < size; i++) {
+    for (size_t i = 0; i <= size; i++) {
         generateStaticEncounter(list, pl, met, mon, seeds[i].seed, init, max);
     }
 }
@@ -31,9 +31,6 @@ void generateStaticEncounter(senc_node** list, Player pl, Method met, uint16_t m
 
     uint32_t advances;
     advances = max - init;
-    if (advances <= 0) {
-        return;
-    }
 
     seed = jump_ahead(Gen3JumpTable, seed, init);
 
@@ -98,7 +95,7 @@ void generateWildEncountersFromSeedList(
         uint32_t init,
         uint32_t max) {
 
-    for (size_t i = 0; i < size; i++) {
+    for (size_t i = 0; i <= size; i++) {
         generateWildEncounter(list, pl, met, slots, et, filter, seeds[i].seed, init, max);
     }
 };
@@ -120,9 +117,6 @@ void generateWildEncounter(
 
     uint32_t advances;
     advances = max - init;
-    if (advances <= 0) {
-        return;
-    }
 
     uint32_t initial_seed = seed;
 
@@ -220,7 +214,7 @@ void generateWildEncounter(
 
         enc->hp = HP[get_hp_value(enc->IVs)].type;
         enc->hp_pow = get_hp_power(enc->IVs);
-        enc->advances = i;
+        enc->advances = i + init;
         enc->seed = initial_seed;
 
         pushWenc(list, *enc);
