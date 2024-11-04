@@ -46,7 +46,8 @@ void printWEncounterList(wenc_node* enc);
 void freeSEncList(senc_node* head);
 void freeWEncList(wenc_node* head);
 
-void generateStaticEncounter(senc_node** list, Player pl, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max);
+void generateStaticEncounter(senc_node** list, Player pl, Method met, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max);
+void generateStaticEncounterFromSeedList(senc_node** list, Player pl, Method met, InitialSeed *seeds, uint32_t size, uint16_t mon, uint32_t init, uint32_t max);
 
 void generateWildEncounter( wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, uint32_t seed, uint32_t init, uint32_t max);
 void generateWildEncountersFromSeedList(wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, InitialSeed *seeds, uint32_t size, uint32_t init, uint32_t max);

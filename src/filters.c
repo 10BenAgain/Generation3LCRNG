@@ -9,7 +9,22 @@ uint8_t genderFilterCheckWild(WildFilter* filter, uint8_t gender);
 uint8_t natureFilterCheckWild(WildFilter* filter, uint8_t nature);
 uint8_t shinyFilterCheckWild(WildFilter* filter, uint8_t shiny);
 
-void generateStaticEncounter(senc_node** list, Player pl, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max) {
+void generateStaticEncounterFromSeedList(
+        senc_node** list,
+        Player pl,
+        Method met,
+        InitialSeed *seeds,
+        uint32_t size,
+        uint16_t mon,
+        uint32_t init,
+        uint32_t max
+        ) {
+    for (size_t i = 0; i < size; i++) {
+        generateStaticEncounter(list, pl, met, mon, seeds[i].seed, init, max);
+    }
+}
+
+void generateStaticEncounter(senc_node** list, Player pl, Method met, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max) {
     if (max <= 0) {
         return;
     }
@@ -48,6 +63,10 @@ void generateStaticEncounter(senc_node** list, Player pl, uint16_t mon, uint32_t
         enc->IVs[0] = (current_seed >> 16) & IV_MASK; // HP
         enc->IVs[1] = ((current_seed >> 16) >> IV_SHIFT) & IV_MASK; // Atk
         enc->IVs[2] = ((current_seed >> 16) >> 2 * IV_SHIFT) & IV_MASK; // Def
+
+        if (met == M4) {
+            increment_seed(&current_seed, 1);
+        }
 
         // Move RNG by one
         increment_seed(&current_seed, 1);

@@ -26,6 +26,7 @@ typedef enum {
 
 typedef enum {
     M1,
+    M4,
     H1,
     H2,
     H4
