@@ -22,6 +22,7 @@ typedef struct {
     const char* hp;
     uint8_t hp_pow;
     uint8_t shiny;
+    uint32_t seed;
     uint32_t advances;
 } StaticEncounter;
 

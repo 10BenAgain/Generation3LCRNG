@@ -9,10 +9,17 @@ uint8_t genderFilterCheckWild(WildFilter* filter, uint8_t gender);
 uint8_t natureFilterCheckWild(WildFilter* filter, uint8_t nature);
 uint8_t shinyFilterCheckWild(WildFilter* filter, uint8_t shiny);
 
+uint8_t ivFilterCheckStatic(StaticEncounter* we, StaticFilter* filter);
+uint8_t abilityFilterCheckStatic(StaticFilter* filter, uint8_t ability);
+uint8_t genderFilterCheckStatic(StaticFilter* filter, uint8_t gender);
+uint8_t natureFilterCheckStatic(StaticFilter* filter, uint8_t nature);
+uint8_t shinyFilterCheckStatic(StaticFilter* filter, uint8_t shiny);
+
 void generateStaticEncounterFromSeedList(
         senc_node** list,
         Player pl,
         Method met,
+        StaticFilter filter,
         InitialSeed *seeds,
         uint32_t size,
         uint16_t mon,
@@ -20,17 +27,19 @@ void generateStaticEncounterFromSeedList(
         uint32_t max
         ) {
     for (size_t i = 0; i <= size; i++) {
-        generateStaticEncounter(list, pl, met, mon, seeds[i].seed, init, max);
+        generateStaticEncounter(list, pl, met, filter, mon, seeds[i].seed, init, max);
     }
 }
 
-void generateStaticEncounter(senc_node** list, Player pl, Method met, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max) {
+void generateStaticEncounter(senc_node** list, Player pl, Method met, StaticFilter filter, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max) {
     if (max <= 0) {
         return;
     }
 
     uint32_t advances;
     advances = max - init;
+
+    uint32_t initial_seed = seed;
 
     seed = jump_ahead(Gen3JumpTable, seed, init);
 
@@ -47,9 +56,10 @@ void generateStaticEncounter(senc_node** list, Player pl, Method met, uint16_t m
         }
 
         enc->mon = mon;
-        increment_seed(&current_seed, 1);
 
+        increment_seed(&current_seed, 1);
         uint32_t second_half = current_seed >> 16;
+
         increment_seed(&current_seed, 1);
         uint32_t first_half = current_seed >> 16;
 
@@ -71,13 +81,41 @@ void generateStaticEncounter(senc_node** list, Player pl, Method met, uint16_t m
         enc->IVs[3] = ((current_seed >> 16) >> IV_SHIFT) & IV_MASK; // SpD
         enc->IVs[4] = ((current_seed>> 16) >> 2 * IV_SHIFT) & IV_MASK; // Spe
 
+        if (!ivFilterCheckStatic(enc, &filter)) {
+            free(enc);
+            continue;
+        }
+
         enc->nature = enc->PID % 25;
+        if (!natureFilterCheckStatic(&filter, enc->nature)) {
+            free(enc);
+            continue;
+        }
+
         enc->ability = enc->PID & 1;
+        if (!abilityFilterCheckStatic(&filter, enc->ability)) {
+            free(enc);
+            continue;
+        }
 
         enc->shiny = is_shiny(enc->PID, pl.TID, pl.SID);
+
+        if (!shinyFilterCheckStatic(&filter, enc->shiny)) {
+            free(enc);
+            continue;
+        }
+
         enc->gender = get_gender_str(get_gender(enc->PID, pokemon[mon].gr));
+
+        if (!genderFilterCheckStatic(&filter, get_gender(enc->PID, pokemon[mon].gr))) {
+            free(enc);
+            continue;
+        }
+
         enc->hp = HP[get_hp_value(enc->IVs)].type;
         enc->hp_pow = get_hp_power(enc->IVs);
+        enc->seed = initial_seed;
+        enc->advances = i + init;
 
         pushSEnc(list, *enc);
     }
@@ -255,6 +293,40 @@ natureFilterCheckWild(WildFilter* filter, uint8_t nature) {
     return (filter->natures[nature] == 1);
 }
 
+uint8_t
+ivFilterCheckStatic(StaticEncounter* se, StaticFilter* filter) {
+    return (se->IVs[0] >= filter->hp_iv_bounds[0] && se->IVs[0] <= filter->hp_iv_bounds[1] &&
+            se->IVs[1] >= filter->atk_iv_bounds[0] && se->IVs[1] <= filter->atk_iv_bounds[1] &&
+            se->IVs[2] >= filter->def_iv_bounds[0] && se->IVs[2] <= filter->def_iv_bounds[1] &&
+            se->IVs[3] >= filter->spa_iv_bounds[0] && se->IVs[3] <= filter->spa_iv_bounds[1] &&
+            se->IVs[4] >= filter->spd_iv_bounds[0] && se->IVs[4] <= filter->spd_iv_bounds[1] &&
+            se->IVs[5] >= filter->spe_iv_bounds[0] && se->IVs[5] <= filter->spe_iv_bounds[1] );
+}
+
+uint8_t
+abilityFilterCheckStatic(StaticFilter* filter, uint8_t ability) {
+    return (filter->ability[ability] == 1);
+}
+
+uint8_t
+genderFilterCheckStatic(StaticFilter* filter, uint8_t gender) {
+    return  (filter->gender[0] == 1 && gender == 0) ||  // Male gender[0] == 1
+            (filter->gender[1] == 1 && gender == 1) ||  // Female gender[1] == 1
+            (filter->gender[2] == 1 && gender == 3);    // Genderless gender[2] == 1
+}
+
+uint8_t
+shinyFilterCheckStatic(StaticFilter* filter, uint8_t shiny) {
+    return (filter->shiny[0] == 1 && shiny == 2) ||     // Square shiny[0] == 1
+           (filter->shiny[1] == 1 && shiny == 1) ||     // Star shiny[1] == 1
+           (filter->shiny[2] == 1 && shiny == 0);       // None
+}
+
+uint8_t
+natureFilterCheckStatic(StaticFilter* filter, uint8_t nature) {
+    return (filter->natures[nature] == 1);
+}
+
 void
 pushSEnc(senc_node** h, StaticEncounter enc) {
     // Create node pointer
@@ -295,6 +367,8 @@ printSEncounterList(senc_node* enc) {
 
     int i;
     while(temp != NULL) {
+        printf("%X | ", temp->se.seed);
+        printf("%d | ", temp->se.advances);
         printf("%X | ", temp->se.PID);
         printf("%s | ", get_nature_str(temp->se.nature));
         printf("Ability: %X | ", temp->se.ability );
@@ -364,7 +438,29 @@ freeWEncList(wenc_node* head) {
     }
 }
 
-void applyNatureToWildFilter(Nature nt, WildFilter* filter) { filter->natures[nt.key] = 1;}
+void applyNatureToStaticFilter(Nature nt, StaticFilter* filter) { filter->natures[nt.key] = 1; }
+void applyNatureToWildFilter(Nature nt, WildFilter* filter) { filter->natures[nt.key] = 1; }
+
+void applyIVEstimateToStaticFilter(IVEstimate* target, StaticFilter* filter) {
+    int i, l, u;
+    get_all_stat_iv_range(target);
+
+    /* An array of pointers that point to the start of the filter struct arrays... yeesh*/
+    uint8_t (*iv_bounds[6])[2] = {
+            &filter->hp_iv_bounds,
+            &filter->atk_iv_bounds,
+            &filter->def_iv_bounds,
+            &filter->spa_iv_bounds,
+            &filter->spd_iv_bounds,
+            &filter->spe_iv_bounds
+    };
+
+    for (i = 0; i < 6; i++ ){
+        find_bounds(target->rs[i], &l, &u);
+        iv_bounds[i][0][0] = (uint8_t)l;
+        iv_bounds[i][0][1] = (uint8_t)u;
+    }
+}
 
 void applyIVEstimateToWildFilter(IVEstimate* target, WildFilter* filter) {
     int i, l, u;
