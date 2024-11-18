@@ -295,7 +295,7 @@ natureFilterCheckWild(WildFilter* filter, uint8_t nature) {
 
 uint8_t
 ivFilterCheckStatic(StaticEncounter* se, StaticFilter* filter) {
-    return (se->IVs[0] >= filter->hp_iv_bounds[0] && se->IVs[0] <= filter->hp_iv_bounds[1] &&
+    return (se->IVs[0] >= filter->hp_iv_bounds[0] && se->IVs[0]  <= filter->hp_iv_bounds[1]  &&
             se->IVs[1] >= filter->atk_iv_bounds[0] && se->IVs[1] <= filter->atk_iv_bounds[1] &&
             se->IVs[2] >= filter->def_iv_bounds[0] && se->IVs[2] <= filter->def_iv_bounds[1] &&
             se->IVs[3] >= filter->spa_iv_bounds[0] && se->IVs[3] <= filter->spa_iv_bounds[1] &&

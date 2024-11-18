@@ -130,8 +130,8 @@ const char
     char *LGpath = "data/LG/";
     char *FRpath = "data/FR/";
 #endif
-    const char *path;
-    const char *file;
+    const char *path = NULL;
+    const char *file = NULL;
 
     switch (gv) {
         case FR:
@@ -151,7 +151,17 @@ const char
             break;
         }
     }
-    return get_seed_path(path, file);
+    if (file != NULL) {
+        const char* result = get_seed_path(path, file);
+        if (access(result, F_OK)) {
+            return NULL;
+        }
+        else {
+            return result;
+        }
+    }
+
+    return NULL;
 }
 
 /* Linear search is probably bad but w/e */
