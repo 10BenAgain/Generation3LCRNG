@@ -367,18 +367,18 @@ printSEncounterList(senc_node* enc) {
 
     int i;
     while(temp != NULL) {
-        printf("%X | ", temp->se.seed);
-        printf("%d | ", temp->se.advances);
-        printf("%X | ", temp->se.PID);
-        printf("%s | ", get_nature_str(temp->se.nature));
-        printf("Ability: %X | ", temp->se.ability );
+        fprintf(stdout, "%X | ", temp->se.seed);
+        fprintf(stdout, "%d | ", temp->se.advances);
+        fprintf(stdout, "%X | ", temp->se.PID);
+        fprintf(stdout, "%s | ", get_nature_str(temp->se.nature));
+        fprintf(stdout, "Ability: %X | ", temp->se.ability );
         for (i = 0; i < 6; i ++) {
             printf("%d | ", temp->se.IVs[i]);
         }
-        printf("| %s ", shiny_types[temp->se.shiny]);
-        printf("| %s ", temp->se.hp);
-        printf("| %d ", temp->se.hp_pow);
-        printf("| %s \n", temp->se.gender);
+        fprintf(stdout, "| %s ", shiny_types[temp->se.shiny]);
+        fprintf(stdout, "| %s ", temp->se.hp);
+        fprintf(stdout, "| %d ", temp->se.hp_pow);
+        fprintf(stdout, "| %s \n", temp->se.gender);
 
         temp = temp->next;
     }
@@ -393,23 +393,23 @@ printWEncounterList(wenc_node* enc) {
     c = 0;
     while(temp != NULL) {
         Pokemon m = pokemon[temp->we.mon];
-        printf("%X | ", temp->we.seed);
-        printf("%d | ", temp->we.advances);
-        printf("%s | ", m.name);
-        printf("%d | ", temp->we.slot);
-        printf("%d | ", temp->we.level);
-        printf("%X | ", temp->we.PID);
-        printf("%s | ", get_nature_str(temp->we.nature));
-        printf("%s (%d)| ", (temp->we.ability) ? m.ab1 : m.ab0, temp->we.ability);
+        fprintf(stdout, "%X | ", temp->we.seed);
+        fprintf(stdout, "%d | ", temp->we.advances);
+        fprintf(stdout, "%s | ", m.name);
+        fprintf(stdout, "%d | ", temp->we.slot);
+        fprintf(stdout, "%d | ", temp->we.level);
+        fprintf(stdout, "%X | ", temp->we.PID);
+        fprintf(stdout, "%s | ", get_nature_str(temp->we.nature));
+        fprintf(stdout, "%s (%d)| ", (temp->we.ability) ? m.ab1 : m.ab0, temp->we.ability);
 
         for (i = 0; i < 6; i ++) {
-            printf("%d | ", temp->we.IVs[i]);
+            fprintf(stdout, "%d | ", temp->we.IVs[i]);
         }
 
-        printf(" %s ", shiny_types[temp->we.shiny]);
-        printf("| %s ", temp->we.hp);
-        printf("| %d ", temp->we.hp_pow);
-        printf("| %s\n", get_gender_str(get_gender(temp->we.PID, m.gr)));
+        fprintf(stdout, " %s ", shiny_types[temp->we.shiny]);
+        fprintf(stdout, "| %s ", temp->we.hp);
+        fprintf(stdout, "| %d ", temp->we.hp_pow);
+        fprintf(stdout, "| %s\n", get_gender_str(get_gender(temp->we.PID, m.gr)));
 
         temp = temp->next;
         c++;

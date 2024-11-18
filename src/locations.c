@@ -14,8 +14,11 @@ const char
 
     result = malloc(lfo + lfd + 1); // +1 for terminator char
 
-    if (result == NULL)
+    if (result == NULL) {
+        perror("Memory allocation of file path string failed");
         return NULL;
+    }
+
 
     // Copy folder memory into result with a size of folder string size
     memcpy(result, folder, lfo);
@@ -60,7 +63,10 @@ const char *get_encounter_file_path(GameVersion gv, AreaType at) {
 Slot *load_slots(AreaEntry area, const char *fn) {
     FILE *fp = NULL;
     fp = fopen(fn, "r");
-    if (fp == NULL) return NULL;
+    if (fp == NULL) {
+        perror("Unable to open encounter slot file!");
+        return NULL;
+    }
 
     size_t max_line_size = MAX_LEVEL_LENGTH * SLOTS_COUNT + MAX_MON_LENGTH * SLOTS_COUNT + SLOTS_COUNT + 10;
     char line[max_line_size];
@@ -80,7 +86,10 @@ Slot *load_slots(AreaEntry area, const char *fn) {
     }
 
     Slot *slots = malloc(SLOTS_COUNT * sizeof(Slot));
-    if (slots == NULL) return NULL;
+    if (slots == NULL) {
+        perror("Memory allocation of encounter slots failed!");
+        return NULL;
+    }
     char *token = strtok(line, ",");
 
     switch(area.at) {

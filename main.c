@@ -33,7 +33,7 @@ int main() {
     */
     const char* fp = get_seed_file_path(gv, MONO, LA, START);
     if (access(fp, F_OK)) {
-        printf("Data files missing or not loaded properly!\n");
+        perror("Data files missing or not loaded properly!\n");
         return 1;
     }
 
@@ -44,7 +44,7 @@ int main() {
     InitialSeed *seeds = load_initial_seeds(fp, &len, None);
 
     if(seeds == NULL) {
-        printf("Failed to load initial seed list");
+        perror("Failed to load initial seed list");
         free(seeds);
         return 1;
     }
@@ -53,7 +53,7 @@ int main() {
     index = find_seed_index(seeds, target_seed, len);
 
     if (index == 0) {
-        printf("Seed not found in data!");
+        perror("Seed not found in data!");
         return 1;
     }
 
@@ -63,7 +63,7 @@ int main() {
     /* Create an array of new seed structs from range input and copy the new range to s_len*/
     InitialSeed *seedRange = get_seed_range(seeds, len, index, range, &s_len);
     if(seedRange == NULL) {
-        printf("Failed to load new seed list");
+        perror("Failed to load new seed list");
         free(seeds);
         return 1;
     }
@@ -78,7 +78,7 @@ int main() {
     Slot *slots = load_slots(at, encounter_data_path);
 
     if (slots == NULL) {
-        printf("Failed to load encounter slots");
+        perror("Failed to load encounter slots");
         free(slots);
         return 1;
     }
@@ -133,7 +133,7 @@ int main() {
 
     t = clock() - t;
     double time_taken = (double)t/CLOCKS_PER_SEC;
-    printf("\nCompleted in %f seconds", time_taken);
+    fprintf(stdout, "\nCompleted in %f seconds", time_taken);
 
     /* Free all the memory that was created */
     freeWEncList(head);
