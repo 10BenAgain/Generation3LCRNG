@@ -33,6 +33,12 @@ typedef enum {
 } Method;
 
 typedef enum {
+    None,
+    HELD_SELECT = 1,
+    HELD_A = 12,
+} SeedOffset;
+
+typedef enum {
     LAND,
     WATER,
     ROCKSMASH

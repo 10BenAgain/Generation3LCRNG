@@ -74,7 +74,7 @@ count_lines_in_file(const char *fp) {
 }
 
 InitialSeed
-*load_initial_seeds(const char *fn, uint64_t *len) {
+*load_initial_seeds(const char *fn, uint64_t *len, SeedOffset ofs) {
     uint64_t lc = count_lines_in_file(fn);
     if (lc <= 0) return NULL;
 
@@ -102,6 +102,16 @@ InitialSeed
             token = strtok(NULL, "\n");
             if (token != NULL) {
                 seeds[count].seed = (uint32_t)strtol(token, NULL, 16);
+                switch (ofs) {
+                    case HELD_SELECT:
+                        seeds[count].seed -= HELD_SELECT;
+                        break;
+                    case HELD_A:
+                        seeds[count].seed -= HELD_A;
+                        break;
+                    default:
+                        break;
+                }
                 count++;
             }
         }

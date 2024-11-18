@@ -6,10 +6,43 @@
 #include "rng.h"
 #include "pokemon.h"
 #include "encounter_table.h"
-#include "generator.h"
 #include "seeds.h"
 #include "enums.h"
 #include "ivs.h"
+
+typedef struct {
+    uint32_t TID;
+    uint32_t SID;
+} Player;
+
+typedef struct {
+    uint8_t mon;
+    uint32_t PID;
+    uint8_t nature;
+    uint8_t ability;
+    uint8_t IVs[6];
+    const char* gender;
+    const char* hp;
+    uint8_t hp_pow;
+    uint8_t shiny;
+    uint32_t seed;
+    uint32_t advances;
+} StaticEncounter;
+
+typedef struct {
+    uint32_t PID;
+    uint8_t mon;
+    uint8_t nature;
+    uint8_t ability;
+    uint8_t IVs[6];
+    uint8_t slot;
+    uint8_t level;
+    const char* hp;
+    uint8_t hp_pow;
+    uint8_t shiny;
+    uint32_t seed;
+    uint32_t advances;
+} WildEncounter;
 
 typedef struct SNode {
     StaticEncounter se;
@@ -49,7 +82,6 @@ typedef struct {
     uint8_t shiny[3]; // 0 = Square, 1 = Star, 2 = None
     uint8_t natures[25];
 } WildFilter;
-
 
 void applyNatureToStaticFilter(Nature nt, StaticFilter* filter);
 void applyNatureToWildFilter(Nature nt, WildFilter* filter);

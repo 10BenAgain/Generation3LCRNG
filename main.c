@@ -4,7 +4,6 @@
 #include <time.h>
 #include <unistd.h>
 #include "include/pokemon.h"
-#include "include/generator.h"
 #include "include/ivs.h"
 #include "include/seeds.h"
 #include "include/rng.h"
@@ -42,7 +41,7 @@ int main() {
     uint64_t len, s_len, index;
 
     /* Load the seed data based on the file path determined earlier */
-    InitialSeed *seeds = load_initial_seeds(fp, &len);
+    InitialSeed *seeds = load_initial_seeds(fp, &len, None);
 
     if(seeds == NULL) {
         printf("Failed to load initial seed list");
