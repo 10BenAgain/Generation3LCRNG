@@ -38,7 +38,8 @@ int main() {
     }
 
     /* Declare variable to store the amount of seeds that are going to be added to the seeds array*/
-    uint64_t len, s_len, index;
+    uint64_t len, s_len;
+    int index;
 
     /* Load the seed data based on the file path determined earlier */
     InitialSeed *seeds = load_initial_seeds(fp, &len, None);
@@ -52,7 +53,7 @@ int main() {
     /* Find the index of the target seed from the seed data file */
     index = find_seed_index(seeds, target_seed, len);
 
-    if (index == 0) {
+    if (index < 0) {
         perror("Seed not found in data!");
         return 1;
     }

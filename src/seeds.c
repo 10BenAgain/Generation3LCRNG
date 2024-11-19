@@ -208,7 +208,7 @@ find_seed_index(InitialSeed *set, uint32_t seed, uint64_t length) {
 }
 
 InitialSeed
-*get_seed_range(InitialSeed *set, uint64_t length, uint16_t index, uint16_t range, uint64_t *newLen) {
+*get_seed_range(InitialSeed *set, uint64_t length, int index, uint16_t range, uint64_t *newLen) {
     uint64_t start, end;
 
     if (index - range > 0) {
