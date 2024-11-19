@@ -4,14 +4,19 @@ import os
 import sys
 
 sheets = {
-    "English LG": ["12TUcXGbLY_bBDfVsgWZKvqrX13U6XAATQZrYnzBKP6Y", "2091244688"],
-    "English FR": ["1Mf3F4kTvNEYyDGWKVmMSiar3Fwh1PLzWVXUvGx9YxfA", "1006198830"]
+    "ENG LG": ["12TUcXGbLY_bBDfVsgWZKvqrX13U6XAATQZrYnzBKP6Y", "2091244688"],
+    "ENG FR": ["1Mf3F4kTvNEYyDGWKVmMSiar3Fwh1PLzWVXUvGx9YxfA", "1006198830"],
+    "EU FR": ["1ZSijzpgauwmlyJATgtNQ16DHKM5Ez9CMbLj-6CHILLw", "282435957"],
+    "EU LG": ["1ztCL6eYezqgP_3JrpNOdtsVZGKqU1Lly1SG7gSC75nY", "282435957"],
+    "JPN FR 1.0": ["1GMRFM1obLDcYbR6GR6KrE8UZotA7djUTw8PxqVFnCVY", "1608943801"],
+    "JPN FR 1.1": ["1aQeWaZSi1ycSytrNEOwxJNoEg-K4eItYagU_dh9VIeU", "791743105"],
+    "JPN LG": ["1LSRVD0_zK6vyd6ettUDfaCFJbm00g451d8s96dqAbA4", "1862478029"]
 }
 
 audio = ["Stereo", "Mono"]
 button_option = ["LA", "LR", "HELP"]
 seed_button = ["A", "L", "Start"]
-bad_strings = ["", "0000", "#N/A", "#VALUE!"]
+bad_strings = ["", "0000", "#N/A", "#VALUE!", "????"]
 
 lg_game_strings = [
     "MONO/LR",
@@ -66,6 +71,11 @@ fr_game_options = {
 }
 
 
+def adv2ms(advances):
+    # NDS frame rate
+    return int(round((1 / 59.6555) * 1000 * advances))
+
+
 def fetch_sheet_data(sheet_id, gid):
     url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv&gid={gid}"
     try:
@@ -77,12 +87,108 @@ def fetch_sheet_data(sheet_id, gid):
         return None
 
 
-def write_english_fr_data():
+def write_jpn_lg_data():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = os.path.join(script_dir, '..', 'FR')
+    data_dir = os.path.join(script_dir, '..', 'LG//JPN')
     sys.path.append(data_dir)
 
-    text = fetch_sheet_data(sheets["English FR"][0], sheets["English FR"][1])
+    text = fetch_sheet_data(sheets["JPN LG"][0], sheets["JPN LG"][1])
+    timer_row = 0
+    seed_row = 1
+
+    for _ in range(5):
+        opts = []
+        headers = []
+        csv_file = csv.reader(text.split("\n"), delimiter=",")
+        next(csv_file, None)
+        next(csv_file, None)
+        for row in csv_file:
+            if row[seed_row] in lg_game_strings:
+                headers = lg_game_options[row[seed_row]]
+                break
+
+        for row in csv_file:
+            if row[seed_row] not in bad_strings and row[timer_row] != '':
+                timer = adv2ms(int(row[timer_row]))
+                entry = [str(timer), row[seed_row]]
+                opts.append(entry)
+        seed_row += 1
+
+        with open(f"{data_dir}/{headers[0]}-{headers[1]}-{headers[2]}", 'w', newline='\n') as file:
+            writer = csv.writer(file)
+            writer.writerows(opts)
+
+
+def write_jpn10_fr_data():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, '..', 'FR//JPN1_0')
+    sys.path.append(data_dir)
+
+    text = fetch_sheet_data(sheets["JPN FR 1.0"][0], sheets["JPN FR 1.0"][1])
+    timer_row = 0
+    seed_row = 1
+
+    for _ in range(5):
+        opts = []
+        headers = []
+        csv_file = csv.reader(text.split("\n"), delimiter=",")
+        next(csv_file, None)
+        next(csv_file, None)
+        for row in csv_file:
+            if row[seed_row] in lg_game_strings:
+                headers = lg_game_options[row[seed_row]]
+                break
+
+        for row in csv_file:
+            if row[seed_row] not in bad_strings and row[timer_row] != '':
+                timer = adv2ms(int(row[timer_row]))
+                entry = [str(timer), row[seed_row]]
+                opts.append(entry)
+        seed_row += 1
+
+        with open(f"{data_dir}/{headers[0]}-{headers[1]}-{headers[2]}", 'w', newline='\n') as file:
+            writer = csv.writer(file)
+            writer.writerows(opts)
+
+
+def write_jpn11_fr_data():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, '..', 'FR//JPN1_1')
+    sys.path.append(data_dir)
+
+    text = fetch_sheet_data(sheets["JPN FR 1.1"][0], sheets["JPN FR 1.1"][1])
+    timer_row = 0
+    seed_row = 1
+
+    for _ in range(5):
+        opts = []
+        headers = []
+        csv_file = csv.reader(text.split("\n"), delimiter=",")
+        next(csv_file, None)
+        next(csv_file, None)
+        for row in csv_file:
+            if row[seed_row] in lg_game_strings:
+                headers = lg_game_options[row[seed_row]]
+                break
+
+        for row in csv_file:
+            if row[seed_row] not in bad_strings and row[timer_row] != '':
+                timer = adv2ms(int(row[timer_row]))
+                entry = [str(timer), row[seed_row]]
+                opts.append(entry)
+        seed_row += 1
+
+        with open(f"{data_dir}/{headers[0]}-{headers[1]}-{headers[2]}", 'w', newline='\n') as file:
+            writer = csv.writer(file)
+            writer.writerows(opts)
+
+
+def write_english_fr_data():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, '..', 'FR//ENG')
+    sys.path.append(data_dir)
+
+    text = fetch_sheet_data(sheets["ENG FR"][0], sheets["ENG FR"][1])
 
     timer_row = 2
     seed_row = 3
@@ -119,10 +225,10 @@ def write_english_fr_data():
 
 def write_english_lg_data():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    data_dir = os.path.join(script_dir, '..', 'LG')
+    data_dir = os.path.join(script_dir, '..', 'LG//ENG')
     sys.path.append(data_dir)
 
-    text = fetch_sheet_data(sheets["English LG"][0], sheets["English LG"][1])
+    text = fetch_sheet_data(sheets["ENG LG"][0], sheets["ENG LG"][1])
     timer_row = 2
     seed_row = 3
 
@@ -146,9 +252,75 @@ def write_english_lg_data():
             writer = csv.writer(file)
             writer.writerows(opts)
 
+
+def write_eu_lg_data():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, '..', 'LG//EU')
+    sys.path.append(data_dir)
+
+    text = fetch_sheet_data(sheets["EU LG"][0], sheets["EU LG"][1])
+    timer_row = 2
+    seed_row = 3
+
+    for _ in range(12):
+        opts = []
+        headers = []
+        csv_file = csv.reader(text.split("\n"), delimiter=",")
+        next(csv_file, None)
+        for row in csv_file:
+            if row[seed_row] in lg_game_strings:
+                headers = lg_game_options[row[seed_row]]
+                break
+
+        for row in csv_file:
+            if row[seed_row] not in bad_strings:
+                entry = [row[timer_row], row[seed_row]]
+                opts.append(entry)
+        seed_row += 1
+
+        with open(f"{data_dir}/{headers[0]}-{headers[1]}-{headers[2]}", 'w', newline='\n') as file:
+            writer = csv.writer(file)
+            writer.writerows(opts)
+
+
+def write_eu_fr_data():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    data_dir = os.path.join(script_dir, '..', 'FR//EU')
+    sys.path.append(data_dir)
+
+    text = fetch_sheet_data(sheets["EU FR"][0], sheets["EU FR"][1])
+    timer_row = 2
+    seed_row = 3
+
+    for _ in range(14):
+        opts = []
+        headers = []
+        csv_file = csv.reader(text.split("\n"), delimiter=",")
+        next(csv_file, None)
+        for row in csv_file:
+            if row[seed_row] in lg_game_strings:
+                headers = lg_game_options[row[seed_row]]
+                break
+
+        for row in csv_file:
+            if row[seed_row] not in bad_strings:
+                entry = [row[timer_row], row[seed_row]]
+                opts.append(entry)
+        seed_row += 1
+
+        with open(f"{data_dir}/{headers[0]}-{headers[1]}-{headers[2]}", 'w', newline='\n') as file:
+            writer = csv.writer(file)
+            writer.writerows(opts)
+
+
 def main():
+    write_english_fr_data()
     write_english_lg_data()
-    write_english_lg_data()
+    write_jpn11_fr_data()
+    write_jpn10_fr_data()
+    write_jpn_lg_data()
+    write_eu_lg_data()
+    write_eu_fr_data()
 
 
 if __name__ == "__main__":
