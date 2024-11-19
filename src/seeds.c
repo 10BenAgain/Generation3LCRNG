@@ -122,7 +122,7 @@ InitialSeed
 }
 
 const char
-*get_seed_file_path(GameVersion gv, AudioSetting audS, ButtonSetting btnS, ButtonSeed btn) {
+*get_seed_file_path(GameVersion gv, Language lang, JPNVersion jver, AudioSetting audS, ButtonSetting btnS, ButtonSeed btn) {
 #ifdef BUILD_PATH
     char *LGpath = "../data/LG/";
     char *FRpath = "../data/FR/";
@@ -131,6 +131,7 @@ const char
     char *FRpath = "data/FR/";
 #endif
     const char *path = NULL;
+    const char *language = NULL;
     const char *file = NULL;
 
     switch (gv) {
@@ -143,6 +144,34 @@ const char
         default:
             return NULL;
     }
+
+    switch(lang) {
+        case English:
+            language = "ENG/";
+            break;
+        case EU:
+            language = "EU/";
+            break;
+        case JPN:
+            if (gv == FR) {
+                switch (jver) {
+                    case J10:
+                        language = "JPN1_0/";
+                        break;
+                    case J11:
+                        language = "JPN1_1/";
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                language = "JPN/";
+                break;
+            }
+        default:
+            break;
+    }
+
     for (size_t i = 0; i < sizeof(optionFileMappings) / sizeof(OptionFileMap); i++) {
         if (optionFileMappings[i].audS == audS &&
             optionFileMappings[i].btnS == btnS &&
@@ -152,7 +181,8 @@ const char
         }
     }
     if (file != NULL) {
-        const char* result = get_seed_path(path, file);
+        const char *new_path = get_seed_path(path, language);
+        const char* result = get_seed_path(new_path, file);
         if (access(result, F_OK)) {
             return NULL;
         }

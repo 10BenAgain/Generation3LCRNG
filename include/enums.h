@@ -25,6 +25,18 @@ typedef enum {
 } GameVersion;
 
 typedef enum {
+    English,
+    EU,
+    JPN
+} Language;
+
+typedef enum {
+    LEAF_GREEN,
+    J10,
+    J11
+} JPNVersion;
+
+typedef enum {
     M1,
     M4,
     H1,

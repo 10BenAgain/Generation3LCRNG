@@ -31,7 +31,7 @@ int main() {
      * LA = button setting
      * Start = seed button
     */
-    const char* fp = get_seed_file_path(gv, MONO, LA, START);
+    const char* fp = get_seed_file_path(gv, English, LEAF_GREEN, MONO, LA, START);
     if (access(fp, F_OK)) {
         perror("Data files missing or not loaded properly!\n");
         return 1;
