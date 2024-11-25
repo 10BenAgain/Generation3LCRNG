@@ -34,7 +34,7 @@ int main() {
     const char* fp = get_seed_file_path(gv, English, LEAF_GREEN, MONO, LA, START);
     if (access(fp, F_OK)) {
         perror("Data files missing or not loaded properly!\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Declare variable to store the amount of seeds that are going to be added to the seeds array*/
@@ -47,7 +47,7 @@ int main() {
     if(seeds == NULL) {
         perror("Failed to load initial seed list");
         free(seeds);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Find the index of the target seed from the seed data file */
@@ -55,7 +55,7 @@ int main() {
 
     if (index < 0) {
         perror("Seed not found in data!");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Declare and initialize the range of seeds to look thru (+/-) target index */
@@ -66,7 +66,7 @@ int main() {
     if(seedRange == NULL) {
         perror("Failed to load new seed list");
         free(seeds);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Free the original total list of seeds */
@@ -81,7 +81,7 @@ int main() {
     if (slots == NULL) {
         perror("Failed to load encounter slots");
         free(slots);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     /* Declare a filter struct with values to search for while generating encounters */
@@ -141,5 +141,5 @@ int main() {
     free(seedRange);
     free(slots);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
