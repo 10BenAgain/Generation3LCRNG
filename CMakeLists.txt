@@ -21,3 +21,9 @@ file(GLOB SRC_FILES_IN_SRC ${PROJECT_SOURCE_DIR}/src/*.c)
 set(ALL_SRC_FILES ${SRC_FILES} ${SRC_FILES_IN_SRC})
 
 add_executable(${EXECUTABLE_NAME} ${ALL_SRC_FILES})
+
+add_library(inih STATIC ${PROJECT_SOURCE_DIR}/external/inih/ini.c)
+
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE inih)
+
+target_include_directories(${EXECUTABLE_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/external/inih)
