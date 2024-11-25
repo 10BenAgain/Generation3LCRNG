@@ -2,6 +2,7 @@
 build/
 test/
 CMakeFiles/
+external/
 
 # Debugger + IDE nonsense
 .vscode/
