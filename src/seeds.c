@@ -195,7 +195,7 @@ const char
 }
 
 /* Linear search is probably bad but w/e */
-uint64_t
+int
 find_seed_index(InitialSeed *set, uint32_t seed, uint64_t length) {
     if (set == NULL) return 0;
 
@@ -204,7 +204,7 @@ find_seed_index(InitialSeed *set, uint32_t seed, uint64_t length) {
             return i;
         }
     }
-    return 0;
+    return -1;
 }
 
 InitialSeed
