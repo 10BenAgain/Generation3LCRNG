@@ -10,11 +10,22 @@
 #include "include/filters.h"
 #include "include/settings.h"
 
-int main() {
+int main(int argc, char* argv[]) {
 
     /* Load config file */
+    if (argc != 2) {
+        fprintf(stdout, "Settings ini file path required as arg!\n");
+        return EXIT_FAILURE;
+    }
+
+    const char* settings_profile = argv[1];
+    if (access(settings_profile, F_OK)) {
+        perror("Unable to find ini file!\n");
+        return EXIT_FAILURE;
+    }
+
     Config cf;
-    if (ini_parse("settings.ini", handler, &cf) < 0) {
+    if (ini_parse(settings_profile, handler, &cf) < 0) {
         perror("Unable to load ini file!\n");
         return EXIT_FAILURE;
     }
