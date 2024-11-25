@@ -8,13 +8,64 @@
 #include "include/seeds.h"
 #include "include/rng.h"
 #include "include/filters.h"
+#include "include/settings.h"
 
 int main() {
-    /* Settings for target search */
+
+    /* Load config file */
+    Config cf;
+    if (ini_parse("settings.ini", handler, &cf) < 0) {
+        perror("Unable to load ini file!\n");
+        return EXIT_FAILURE;
+    }
+
+    /* Declare player struct */
     Player player;
-    player.SID = 34437;
-    player.TID = 44782;
-    GameVersion gv = LG;
+
+    /* Declare setting enums to be used from config file */
+    GameVersion gv;
+    JPNVersion jgv;
+    Language lang;
+    AudioSetting audio;
+    ButtonSetting buttonSetting;
+    ButtonSeed buttonSeed;
+
+    /* Convert config to player basically */
+    player.SID = cf.sid;
+    player.TID = cf.tid;
+
+    /* Make sure the loaded values are correct*/
+    if (cfToGameVersion(&cf, &gv)) {
+        perror("Unable to parse game version from settings.ini\n");
+        return EXIT_FAILURE;
+    }
+
+    if (cfToGameSubVersion(&cf, gv, &jgv)) {
+        perror("Unable to parse sub version from settings.ini\n");
+        return EXIT_FAILURE;
+    }
+
+    if (cfToLanguage(&cf, &lang)) {
+        perror("Unable to parse language from settings.ini\n");
+        return EXIT_FAILURE;
+    }
+
+    if (cfToAudio(&cf, &audio)) {
+        perror("Unable to parse audio from settings.ini\n");
+        return EXIT_FAILURE;
+    }
+
+    if (cfToButtonSetting(&cf, &buttonSetting)) {
+        perror("Unable to parse button setting from settings.ini\n");
+        return EXIT_FAILURE;
+    }
+
+    if (cfToButtonSeed(&cf, &buttonSeed)) {
+        perror("Unable to parse button seed from settings.ini\n");
+        return EXIT_FAILURE;
+    }
+
+    /* Search target */
     Pokemon mon = pokemon[20]; // Spearow
     Nature nat = natures[8]; // Impish
     uint8_t level = 13;
@@ -24,14 +75,8 @@ int main() {
     EncounterType encT = Grass;
     AreaEntry at = landAreaMap[55]; // Route 10
 
-    /*
-     * Create a path to the seed data based on the game version and in game settings
-     * gv = FR/LG
-     * MONO = audio setting
-     * LA = button setting
-     * Start = seed button
-    */
-    const char* fp = get_seed_file_path(gv, English, LEAF_GREEN, MONO, LA, START);
+    /* Create a path to the seed data based on the game version and in game settings */
+    const char* fp = get_seed_file_path(gv, lang, jgv, audio, buttonSetting, buttonSeed);
     if (access(fp, F_OK)) {
         perror("Data files missing or not loaded properly!\n");
         return EXIT_FAILURE;
