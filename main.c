@@ -12,18 +12,20 @@
 
 int main(int argc, char* argv[]) {
 
-    /* Load config file */
+    /* Make sure argument for settings file was passed */
     if (argc != 2) {
         fprintf(stdout, "Settings ini file path required as arg!\n");
         return EXIT_FAILURE;
     }
 
+    /* Make sure the file actually exists*/
     const char* settings_profile = argv[1];
     if (access(settings_profile, F_OK)) {
         perror("Unable to find ini file!\n");
         return EXIT_FAILURE;
     }
 
+    /* Declare config struct and parse the file with the specified handler*/
     Config cf;
     if (ini_parse(settings_profile, handler, &cf) < 0) {
         perror("Unable to load ini file!\n");
@@ -34,47 +36,14 @@ int main(int argc, char* argv[]) {
     Player player;
 
     /* Declare setting enums to be used from config file */
-    GameVersion gv;
-    JPNVersion jgv;
-    Language lang;
-    AudioSetting audio;
-    ButtonSetting buttonSetting;
-    ButtonSeed buttonSeed;
+    Settings settings;
 
     /* Convert config to player basically */
     player.SID = cf.sid;
     player.TID = cf.tid;
 
     /* Make sure the loaded values are correct*/
-    if (cfToGameVersion(&cf, &gv)) {
-        perror("Unable to parse game version from settings.ini\n");
-        return EXIT_FAILURE;
-    }
-
-    if (cfToGameSubVersion(&cf, gv, &jgv)) {
-        perror("Unable to parse sub version from settings.ini\n");
-        return EXIT_FAILURE;
-    }
-
-    if (cfToLanguage(&cf, &lang)) {
-        perror("Unable to parse language from settings.ini\n");
-        return EXIT_FAILURE;
-    }
-
-    if (cfToAudio(&cf, &audio)) {
-        perror("Unable to parse audio from settings.ini\n");
-        return EXIT_FAILURE;
-    }
-
-    if (cfToButtonSetting(&cf, &buttonSetting)) {
-        perror("Unable to parse button setting from settings.ini\n");
-        return EXIT_FAILURE;
-    }
-
-    if (cfToButtonSeed(&cf, &buttonSeed)) {
-        perror("Unable to parse button seed from settings.ini\n");
-        return EXIT_FAILURE;
-    }
+    loadSettings(&cf, &settings);
 
     /* Search target */
     Pokemon mon = pokemon[20]; // Spearow
@@ -87,7 +56,7 @@ int main(int argc, char* argv[]) {
     AreaEntry at = landAreaMap[55]; // Route 10
 
     /* Create a path to the seed data based on the game version and in game settings */
-    const char* fp = get_seed_file_path(gv, lang, jgv, audio, buttonSetting, buttonSeed);
+    const char* fp = get_seed_file_path(settings);
     if (access(fp, F_OK)) {
         perror("Data files missing or not loaded properly!\n");
         return EXIT_FAILURE;
@@ -129,7 +98,7 @@ int main(int argc, char* argv[]) {
     free(seeds);
 
     /* Determine the encounter slot data path from game version and area*/
-    const char *encounter_data_path = get_encounter_file_path(gv, at.at);
+    const char *encounter_data_path = get_encounter_file_path(settings.gv, at.at);
 
     /* Load slot data in Slot struct array based on input path determined earlier*/
     Slot *slots = load_slots(at, encounter_data_path);
@@ -180,7 +149,7 @@ int main(int argc, char* argv[]) {
     /* Declare and initialize search parameters*/
     uint32_t init, max;
     init = 0;
-    max = 100000;
+    max = 100;
 
     /* Generate some wild encounters */
     generateWildEncountersFromSeedList(&head, player, H1, slots, encT, wf, seedRange, s_len, init, max);
@@ -190,7 +159,7 @@ int main(int argc, char* argv[]) {
 
     t = clock() - t;
     double time_taken = (double)t/CLOCKS_PER_SEC;
-    fprintf(stdout, "\nCompleted in %f seconds", time_taken);
+    fprintf(stdout, "\nCompleted in %f seconds\n", time_taken);
 
     /* Free all the memory that was created */
     freeWEncList(head);
