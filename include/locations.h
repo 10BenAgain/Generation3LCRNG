@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include "enums.h"
+#include "pokemon.h"
 
 #define MAX_LEVEL_LENGTH    4
 #define MAX_MON_LENGTH      4
@@ -15,6 +16,8 @@
 #define LAND_SLOTS          12
 #define ROCK_SLOTS          5
 #define WATER_SLOTS         5
+
+#define MAPSIZE(map) (sizeof(map)/sizeof(AreaEntry))
 
 extern const char* EncounterTypeStrings[3];
 
@@ -74,13 +77,13 @@ static const AreaEntry landAreaMap[89] = {
     { LAND, "Mt. Moon B1F", 33 },
     { LAND, "Mt. Moon B2F", 34 },
     { LAND, "Pattern Bush", 35 },
-    { LAND, "Pokémon Mansion Upper Floors", 36 },
-    { LAND, "Pokémon Mansion Basement", 37 },
-    { LAND, "Pokémon Tower 3F", 38 },
-    { LAND, "Pokémon Tower 4F", 39 },
-    { LAND, "Pokémon Tower 5F", 40 },
-    { LAND, "Pokémon Tower 6F", 41 },
-    { LAND, "Pokémon Tower 7F", 42 },
+    { LAND, "Pokemon Mansion Upper Floors", 36 },
+    { LAND, "Pokemon Mansion Basement", 37 },
+    { LAND, "Pokemon Tower 3F", 38 },
+    { LAND, "Pokemon Tower 4F", 39 },
+    { LAND, "Pokemon Tower 5F", 40 },
+    { LAND, "Pokemon Tower 6F", 41 },
+    { LAND, "Pokemon Tower 7F", 42 },
     { LAND, "Power Plant", 43 },
     { LAND, "Rock Tunnel 1F", 44 },
     { LAND, "Rock Tunnel B1F", 45 },
@@ -204,6 +207,9 @@ static const EncounterFileMap encMappings[] = {
         { LG, ROCKSMASH,    "rock"  },
         { LG, WATER,        "water" },
 };
+
+void listLocations(EncounterType et);
+void listMonsInLocation(GameVersion gv, AreaEntry entry);
 
 const char *get_encounter_file_path(GameVersion gv, AreaType at);
 Slot *load_slots(AreaEntry area, const char *fn);

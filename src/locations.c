@@ -19,7 +19,6 @@ const char
         return NULL;
     }
 
-
     // Copy folder memory into result with a size of folder string size
     memcpy(result, folder, lfo);
 
@@ -128,4 +127,54 @@ Slot *load_slots(AreaEntry area, const char *fn) {
         token = strtok(NULL, ",");
     }
     return slots;
+}
+
+void listMonsInLocation(GameVersion gv, AreaEntry entry) {
+    AreaType at = entry.at;
+    const char* enc_path = get_encounter_file_path(gv, at);
+    Slot* slots = load_slots(entry, enc_path);
+    size_t slot_count;
+    switch (at) {
+        case LAND:
+            slot_count = LAND_SLOTS;
+            break;
+        case WATER:
+            slot_count = WATER_SLOTS;
+            break;
+        case ROCKSMASH:
+            slot_count = ROCK_SLOTS;
+            break;
+    }
+
+    for (size_t i = 0; i < slot_count; i++) {
+        fprintf(stdout, "Slot: %d | %s | Level: %d-%d\n",
+               slots[i].index, pokemon[slots[i].mon].name, slots[i].minL, slots[i].maxL);
+    }
+
+    free(slots);
+}
+
+void listLocations(EncounterType et) {
+    size_t locations;
+    const AreaEntry* map;
+    switch (et) {
+        case Grass:
+            locations = MAPSIZE(landAreaMap);
+            map = landAreaMap;
+            break;
+        case Water:
+            locations = MAPSIZE(waterAreaMap);
+            map = waterAreaMap;
+            break;
+        case RockSmash:
+            locations = MAPSIZE(rockAreaMap);
+            map = rockAreaMap;
+            break;
+        default:
+            return;
+    }
+
+    for (size_t i = 0; i < locations; i++) {
+        fprintf(stdout, "%d | %s\n", map[i].index, map[i].name);
+    }
 }
