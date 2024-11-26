@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "enums.h"
+#include "settings.h"
 
 typedef struct {
     uint32_t timer;
@@ -20,10 +21,10 @@ typedef struct {
     const char *file;
 } OptionFileMap;
 
-#define MAX_TIMER_LENGTH 10
-#define MAX_SEED_LENGTH 10
+#define MAX_TIMER_LENGTH    10
+#define MAX_SEED_LENGTH     10
 
-const char *get_seed_file_path(GameVersion gv, Language lang, JPNVersion jver, AudioSetting audS, ButtonSetting btnS, ButtonSeed btn);
+const char *get_seed_file_path(Settings set);
 InitialSeed *load_initial_seeds(const char *fn, uint64_t *len, SeedOffset ofs);
 int find_seed_index(InitialSeed *set, uint32_t seed, uint64_t length);
 InitialSeed *get_seed_range(InitialSeed *set, uint64_t length, int index, uint16_t range, uint64_t *newLen);

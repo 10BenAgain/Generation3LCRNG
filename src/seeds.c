@@ -122,7 +122,7 @@ InitialSeed
 }
 
 const char
-*get_seed_file_path(GameVersion gv, Language lang, JPNVersion jver, AudioSetting audS, ButtonSetting btnS, ButtonSeed btn) {
+*get_seed_file_path(Settings set) {
 #ifdef BUILD_PATH
     char *LGpath = "../data/LG/";
     char *FRpath = "../data/FR/";
@@ -134,7 +134,7 @@ const char
     const char *language = NULL;
     const char *file = NULL;
 
-    switch (gv) {
+    switch (set.gv) {
         case FR:
             path = FRpath;
             break;
@@ -145,7 +145,7 @@ const char
             return NULL;
     }
 
-    switch(lang) {
+    switch(set.lang) {
         case English:
             language = "ENG/";
             break;
@@ -153,8 +153,8 @@ const char
             language = "EU/";
             break;
         case JPN:
-            if (gv == FR) {
-                switch (jver) {
+            if (set.gv == FR) {
+                switch (set.jgv) {
                     case J10:
                         language = "JPN1_0/";
                         break;
@@ -173,9 +173,9 @@ const char
     }
 
     for (size_t i = 0; i < sizeof(optionFileMappings) / sizeof(OptionFileMap); i++) {
-        if (optionFileMappings[i].audS == audS &&
-            optionFileMappings[i].btnS == btnS &&
-            optionFileMappings[i].btn == btn) {
+        if (optionFileMappings[i].audS ==   set.audio &&
+            optionFileMappings[i].btnS ==   set.buttonSetting &&
+            optionFileMappings[i].btn  ==   set.buttonSeed) {
             file = optionFileMappings[i].file;
             break;
         }
