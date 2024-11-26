@@ -1,5 +1,14 @@
 #include "../include/pokemon.h"
 
+const char* stats[6] = {
+        "HP",
+        "Atk",
+        "Def",
+        "SpA",
+        "SpD",
+        "Spe"
+};
+
 const char* gender_s[3] = {
     "Male",
     "Female",
@@ -493,3 +502,27 @@ unown_symbols(int val) {
         return (char)(val + 65);
 }
 
+int searchPokemon(const char* name) {
+    for (size_t i = 0; i < sizeof(pokemon)/sizeof(Pokemon); i++) {
+        if (!strcmp(name, pokemon[i].name)) {
+            return (int)(pokemon[i].dex - 1);
+        }
+    }
+    return -1;
+}
+
+void listNatures() {
+    for (size_t i = 0; i < 25; i++) {
+        const char* stat_up = "None";
+        const char* stat_down = "None";
+        for (size_t s = 0; s < 5; s++) {
+            if (nature_multiplier_table[i][s] > 1.0) {
+                stat_up = stats[s + 1];
+            }
+            if (nature_multiplier_table[i][s] < 1.0) {
+                stat_down = stats[s + 1];
+            }
+        }
+        fprintf(stdout, "%d | %s | +%s -%s\n", natures[i].key, natures[i].name, stat_up, stat_down);
+    }
+}

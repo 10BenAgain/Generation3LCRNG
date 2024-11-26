@@ -2,6 +2,8 @@
 #define POKEMON_H
 
 #include <stdint.h>
+#include <string.h>
+#include <stdio.h>
 
 extern const char* gender_s[3];
 extern const char* shiny_types[3];
@@ -70,5 +72,8 @@ extern const Encounter StaticEncounters[];
 extern const HiddenPower HP[16];
 extern const double nature_multiplier_table[25][5];
 
+int searchPokemon(const char* name);
+
+void listNatures();
 
 #endif
