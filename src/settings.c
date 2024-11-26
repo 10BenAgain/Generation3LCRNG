@@ -1,5 +1,12 @@
 #include "../include/settings.h"
 
+int cfToAudio(Config* cf, AudioSetting* as);
+int cfToButtonSetting(Config* cf, ButtonSetting* bs);
+int cfToButtonSeed(Config *cf, ButtonSeed* bs);
+int cfToGameVersion(Config *cf, GameVersion* gv);
+int cfToGameSubVersion(Config *cf, GameVersion gv, JPNVersion* sv);
+int cfToLanguage(Config *cf, Language* lg);
+
 int handler(void* player, const char* section, const char* name, const char * value) {
     Config* pconfig = (Config*)player;
 
@@ -26,6 +33,38 @@ int handler(void* player, const char* section, const char* name, const char * va
         return 0;
     }
     return 1;
+}
+
+void loadSettings(Config* cf, Settings *set) {
+    if (cfToGameVersion(cf, &set->gv)) {
+        perror("Unable to parse game version from settings.ini\n");
+        return;
+    }
+
+    if (cfToGameSubVersion(cf, set->gv, &set->jgv)) {
+        perror("Unable to parse sub version from settings.ini\n");
+        return;
+    }
+
+    if (cfToLanguage(cf, &set->lang)) {
+        perror("Unable to parse language from settings.ini\n");
+        return;
+    }
+
+    if (cfToAudio(cf, &set->audio)) {
+        perror("Unable to parse audio from settings.ini\n");
+        return;
+    }
+
+    if (cfToButtonSetting(cf, &set->buttonSetting)) {
+        perror("Unable to parse button setting from settings.ini\n");
+        return;
+    }
+
+    if (cfToButtonSeed(cf, &set->buttonSeed)) {
+        perror("Unable to parse button seed from settings.ini\n");
+        return;
+    }
 }
 
 int cfToAudio(Config* cf, AudioSetting* as) {

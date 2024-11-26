@@ -20,13 +20,17 @@ typedef struct {
     const char* button;
 } Config;
 
+typedef struct {
+    GameVersion gv;
+    JPNVersion jgv;
+    Language lang;
+    AudioSetting audio;
+    ButtonSetting buttonSetting;
+    ButtonSeed buttonSeed;
+} Settings;
+
 int handler(void* player, const char* section, const char* name, const char * value);
 
-int cfToAudio(Config* cf, AudioSetting* as);
-int cfToButtonSetting(Config* cf, ButtonSetting* bs);
-int cfToButtonSeed(Config *cf, ButtonSeed* bs);
-int cfToGameVersion(Config *cf, GameVersion* gv);
-int cfToGameSubVersion(Config *cf, GameVersion gv, JPNVersion* sv);
-int cfToLanguage(Config *cf, Language* lg);
+void loadSettings(Config* cf, Settings *set);
 
 #endif
