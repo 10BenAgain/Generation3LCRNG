@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#define MAX_DEX 251
+
 extern const char* gender_s[3];
 extern const char* shiny_types[3];
 extern const char* encounter_category[8];
@@ -75,5 +77,6 @@ extern const double nature_multiplier_table[25][5];
 int searchPokemon(const char* name);
 
 void listNatures();
+uint8_t findAbilityIndex(uint8_t dex, const char* name);
 
 #endif

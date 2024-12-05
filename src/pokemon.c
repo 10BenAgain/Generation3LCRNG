@@ -526,3 +526,17 @@ void listNatures() {
         fprintf(stdout, "%d | %s | +%s -%s\n", natures[i].key, natures[i].name, stat_up, stat_down);
     }
 }
+
+uint8_t findAbilityIndex(uint8_t dex, const char* name) {
+    if (dex > MAX_DEX || name == NULL) return 2;
+    Pokemon mon = pokemon[dex - 1];
+
+    fprintf(stdout, "%s\n", mon.name);
+
+    int ab0 = strcmp(name, mon.ab0);
+    int ab1 = strcmp(name, mon.ab1);
+
+    if (ab0 & ab1) return 2;
+    if (!ab0) return 0;
+    if (!ab1) return 1;
+}
