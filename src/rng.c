@@ -1,13 +1,13 @@
 #include "../include/rng.h"
 
 void 
-increment_seed(uint32_t *seed, uint32_t advances) {
+RNGIncrementSeed(uint32_t *seed, uint32_t advances) {
     while(advances--)
         *seed = (*seed * MULTIPLIER + INCREMENT) % MOD;
 }
 
 void 
-decrement_seed(uint32_t *seed, uint32_t advances) {
+RNGDecrementSeed(uint32_t *seed, uint32_t advances) {
     while(advances--) {
         // Probably not optimal nor the best way to get back to original seed but hey, it works for now
         if (*seed & 0xFFFF0000)
@@ -18,20 +18,20 @@ decrement_seed(uint32_t *seed, uint32_t advances) {
 }
 
 uint8_t
-calculate_level(Slot s, uint32_t seed) {
+RNGCalculateLevel(Slot s, uint32_t seed) {
     uint8_t range = s.maxL - s.minL + 1;
-    uint8_t next = nextUShort(range, seed);
+    uint8_t next = RNGNextUShort(range, seed);
     return s.minL + next;
 }
 
 uint32_t 
-next_seed(const uint32_t *seed) {
+RNGNexSeed(const uint32_t *seed) {
     return (*seed * MULTIPLIER + INCREMENT) % MOD;
 }
 
 uint16_t 
-nextUShort(uint16_t max, uint32_t seed) {
-    increment_seed(&seed, 1);
+RNGNextUShort(uint16_t max, uint32_t seed) {
+    RNGIncrementSeed(&seed, 1);
     uint16_t rand = seed >> 16;
     return rand % max;
 }
@@ -54,7 +54,7 @@ nextUShort(uint16_t max, uint32_t seed) {
 
 // https://github.com/Admiral-Fish/PokeFinder/blob/a0c55aec852618a4afff3116b48b3e7df7ba07df/Source/Core/RNG/LCRNG.cpp#L20-L36
 JumpTable
-*compute_jump_table() {
+*_computeJumpTable() {
     JumpTable *jt = malloc(sizeof(JumpTable));
     jt->jump[0].add = INCREMENT;
     jt->jump[0].multiplier = MULTIPLIER;
@@ -72,7 +72,7 @@ JumpTable
 * Then seed = ( 0xEE53 * 0xCFDDDF21 + 0x67DBB608 ) = 0xD542F91D
 */
 uint32_t
-jump_ahead(const Jump table[32], uint32_t seed, uint32_t advances) {
+RNGJumpAhead(const Jump table[32], uint32_t seed, uint32_t advances) {
     int i;
     for (i = 0; advances; advances >>= 1, i++) {
         if (advances & 1) {

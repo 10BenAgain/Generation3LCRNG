@@ -83,22 +83,22 @@ typedef struct {
     uint8_t natures[25];
 } WildFilter;
 
-void applyNatureToStaticFilter(Nature nt, StaticFilter* filter);
-void applyNatureToWildFilter(Nature nt, WildFilter* filter);
+void FilterApplyNatureToStatic(Nature nt, StaticFilter* filter);
+void FilterApplyNatureToWild(Nature nt, WildFilter* filter);
 
-void applyIVEstimateToWildFilter(IVEstimate* target, WildFilter* filter);
-void applyIVEstimateToStaticFilter(IVEstimate* target, StaticFilter* filter);
+void FilterApplyIVEstimateToWild(IVEstimate* target, WildFilter* filter);
+void FilterApplyIVEstimateToStatic(IVEstimate* target, StaticFilter* filter);
 
-void printSEncounterList(senc_node* enc);
-void printWEncounterList(wenc_node* enc);
+void FilterPrintSEncounterList(senc_node* enc);
+void FilterPrintWEncounterList(wenc_node* enc);
 
-void freeSEncList(senc_node* head);
-void freeWEncList(wenc_node* head);
+void FilterFreeSEncList(senc_node* head);
+void FilterFreeWEncList(wenc_node* head);
 
-void generateStaticEncounter(senc_node** list, Player pl, Method met, StaticFilter filter, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max);
-void generateStaticEncounterFromSeedList(senc_node** list, Player pl, Method met, StaticFilter filter, InitialSeed *seeds, uint32_t size, uint16_t mon, uint32_t init, uint32_t max);
+void FilterGenerateStaticEncounter(senc_node** list, Player pl, Method met, StaticFilter filter, uint16_t mon, uint32_t seed, uint32_t init, uint32_t max);
+void FilterGenerateStaticEncounterFromSeedList(senc_node** list, Player pl, Method met, StaticFilter filter, InitialSeed *seeds, uint32_t size, uint16_t mon, uint32_t init, uint32_t max);
 
-void generateWildEncounter( wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, uint32_t seed, uint32_t init, uint32_t max);
-void generateWildEncountersFromSeedList(wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, InitialSeed *seeds, uint32_t size, uint32_t init, uint32_t max);
+void FilterGenerateWildEncounter(wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, uint32_t seed, uint32_t init, uint32_t max);
+void FilterGenerateWildEncountersFromSeedList(wenc_node** list, Player pl, Method met, Slot *slots, EncounterType et, WildFilter filter, InitialSeed *seeds, uint32_t size, uint32_t init, uint32_t max);
 
 #endif

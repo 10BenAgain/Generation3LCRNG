@@ -40,7 +40,7 @@ typedef struct {
     const char *fn;
 } EncounterFileMap;
 
-static const AreaEntry landAreaMap[89] = {
+static const AreaEntry LAND_AREA_MAP[89] = {
     { LAND, "Altering Cave (Default)", 0 },
     { LAND, "Altering Cave (Mystery Gift)", 1 },
     { LAND, "Altering Cave (Mystery Gift)", 2 },
@@ -132,7 +132,7 @@ static const AreaEntry landAreaMap[89] = {
     { LAND, "Water Path", 88 },
 };
 
-static const AreaEntry waterAreaMap[49] = {
+static const AreaEntry WATER_AREA_MAP[49] = {
     { WATER, "Berry Forest", 0 },
     { WATER, "Bond Bridge", 1 },
     { WATER, "Cape Brink", 2 },
@@ -184,7 +184,7 @@ static const AreaEntry waterAreaMap[49] = {
     { WATER, "Water Path", 48 }
 };
 
-static const AreaEntry rockAreaMap[12] = {
+static const AreaEntry ROCK_AREA_MAP[12] = {
     { ROCKSMASH, "Cerulean Cave 1F", 0 },
     { ROCKSMASH, "Cerulean Cave 2F", 1 },
     { ROCKSMASH, "Cerulean Cave B1F", 2 },
@@ -199,7 +199,7 @@ static const AreaEntry rockAreaMap[12] = {
     { ROCKSMASH, "Sevault Canyon", 11 }
 };
 
-static const EncounterFileMap encMappings[] = {
+static const EncounterFileMap ENCOUNTER_MAPPING[] = {
         { FR, LAND,         "land"  },
         { FR, ROCKSMASH,    "rock"  },
         { FR, WATER,        "water" },
@@ -208,10 +208,10 @@ static const EncounterFileMap encMappings[] = {
         { LG, WATER,        "water" },
 };
 
-void listLocations(EncounterType et);
-void listMonsInLocation(GameVersion gv, AreaEntry entry);
+void LocationListFromEncType(EncounterType et);
+void LocationListMonsInLocation(GameVersion gv, AreaEntry entry);
 
-const char *get_encounter_file_path(GameVersion gv, AreaType at);
-Slot *load_slots(AreaEntry area, const char *fn);
+const char *LocationGetEncounterFilePath(GameVersion gv, AreaType at);
+Slot *LocationLoadEncounterSlots(AreaEntry area, const char *fn);
 
 #endif

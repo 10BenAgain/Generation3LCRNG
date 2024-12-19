@@ -5,7 +5,7 @@
 #include "enums.h"
 
 static const uint8_t
-grass_encounter_slot_lookup_table[100] = {
+GRASS_ENCOUNTER_SLOT_LOOKUP_TABLE[100] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -21,7 +21,7 @@ grass_encounter_slot_lookup_table[100] = {
 };
 
 static const uint8_t
-water_encounter_slot_lookup_table[100] = {
+WATER_ENCOUNTER_SLOT_LOOKUP_TABLE[100] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -32,7 +32,7 @@ water_encounter_slot_lookup_table[100] = {
 };
 
 static const uint8_t
-rock_smash_encounter_lookup_table[100] = {
+ROCK_SMASH_ENCOUNTER_SLOT_LOOKUP_TABLE[100] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -43,7 +43,7 @@ rock_smash_encounter_lookup_table[100] = {
 };
 
 static const uint8_t
-old_rod_encounter_lookup_table[100] = {
+OLD_ROD_ENCOUNTER_SLOT_LOOKUP_TABLE[100] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -54,7 +54,7 @@ old_rod_encounter_lookup_table[100] = {
 };
 
 static const uint8_t
-good_rod_encounter_lookup_table[100] = {
+GOOD_ROD_ENCOUNTER_SLOT_LOOKUP_TABLE[100] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -63,7 +63,7 @@ good_rod_encounter_lookup_table[100] = {
 };
 
 static const uint8_t
-super_rod_encounter_lookup_table[100] = {
+SUPER_ROD_ENCOUNTER_SLOT_LOOKUP_TABLE[100] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -77,19 +77,19 @@ static const uint8_t
 *get_enc_table(EncounterType enc) {
     switch (enc) {
         case Grass:
-            return grass_encounter_slot_lookup_table;
+            return GRASS_ENCOUNTER_SLOT_LOOKUP_TABLE;
         case Water:
-            return water_encounter_slot_lookup_table;
+            return WATER_ENCOUNTER_SLOT_LOOKUP_TABLE;
         case RockSmash:
-            return rock_smash_encounter_lookup_table;
+            return ROCK_SMASH_ENCOUNTER_SLOT_LOOKUP_TABLE;
         case OldRod:
-            return old_rod_encounter_lookup_table;
+            return OLD_ROD_ENCOUNTER_SLOT_LOOKUP_TABLE;
         case GoodRod:
-            return good_rod_encounter_lookup_table;
+            return GOOD_ROD_ENCOUNTER_SLOT_LOOKUP_TABLE;
         case SuperRod:
-            return super_rod_encounter_lookup_table;
+            return SUPER_ROD_ENCOUNTER_SLOT_LOOKUP_TABLE;
         default:
-            return grass_encounter_slot_lookup_table;
+            return GRASS_ENCOUNTER_SLOT_LOOKUP_TABLE;
     }
 }
 

@@ -141,7 +141,7 @@ int cfToGameSubVersion(Config *cf, GameVersion gv, JPNVersion* sv) {
 
 int cfToLanguage(Config *cf, Language* lg) {
     if (!strcmp(cf->language, "English")) {
-        *lg = English;
+        *lg = ENGLISH;
         return 0;
     } else if (!strcmp(cf->language, "EU")) {
         *lg = EU;

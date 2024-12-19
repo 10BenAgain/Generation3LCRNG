@@ -28,7 +28,7 @@ const char
     return result;
 }
 
-const char *get_encounter_file_path(GameVersion gv, AreaType at) {
+const char *LocationGetEncounterFilePath(GameVersion gv, AreaType at) {
 #ifdef BUILD_PATH
     char *LGpath = "../data/LGENCSLOTS/";
     char *FRpath = "../data/FRENCSLOTS/";
@@ -50,16 +50,16 @@ const char *get_encounter_file_path(GameVersion gv, AreaType at) {
         default:
             return NULL;
     }
-    for (size_t i = 0; i < sizeof(encMappings) / sizeof(EncounterFileMap); i++) {
-        if (encMappings[i].at == at) {
-            file = encMappings[i].fn;
+    for (size_t i = 0; i < sizeof(ENCOUNTER_MAPPING) / sizeof(EncounterFileMap); i++) {
+        if (ENCOUNTER_MAPPING[i].at == at) {
+            file = ENCOUNTER_MAPPING[i].fn;
             break;
         }
     }
     return get_enc_path(path, file);
 }
 
-Slot *load_slots(AreaEntry area, const char *fn) {
+Slot *LocationLoadEncounterSlots(AreaEntry area, const char *fn) {
     FILE *fp = NULL;
     fp = fopen(fn, "r");
     if (fp == NULL) {
@@ -129,10 +129,10 @@ Slot *load_slots(AreaEntry area, const char *fn) {
     return slots;
 }
 
-void listMonsInLocation(GameVersion gv, AreaEntry entry) {
+void LocationListMonsInLocation(GameVersion gv, AreaEntry entry) {
     AreaType at = entry.at;
-    const char* enc_path = get_encounter_file_path(gv, at);
-    Slot* slots = load_slots(entry, enc_path);
+    const char* enc_path = LocationGetEncounterFilePath(gv, at);
+    Slot* slots = LocationLoadEncounterSlots(entry, enc_path);
     size_t slot_count;
     switch (at) {
         case LAND:
@@ -154,21 +154,21 @@ void listMonsInLocation(GameVersion gv, AreaEntry entry) {
     free(slots);
 }
 
-void listLocations(EncounterType et) {
+void LocationListFromEncType(EncounterType et) {
     size_t locations;
     const AreaEntry* map;
     switch (et) {
         case Grass:
-            locations = MAPSIZE(landAreaMap);
-            map = landAreaMap;
+            locations = MAPSIZE(LAND_AREA_MAP);
+            map = LAND_AREA_MAP;
             break;
         case Water:
-            locations = MAPSIZE(waterAreaMap);
-            map = waterAreaMap;
+            locations = MAPSIZE(WATER_AREA_MAP);
+            map = WATER_AREA_MAP;
             break;
         case RockSmash:
-            locations = MAPSIZE(rockAreaMap);
-            map = rockAreaMap;
+            locations = MAPSIZE(ROCK_AREA_MAP);
+            map = ROCK_AREA_MAP;
             break;
         default:
             return;

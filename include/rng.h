@@ -35,7 +35,7 @@ typedef struct {
 } JumpTable;
 
 /* Result from generating jump table with gen 3 LCRNG values (0x6073 , 0x41C64E6D) */
-static const Jump Gen3JumpTable[32] = {
+static const Jump GEN3_JUMP_TABLE[32] = {
         { 0x41C64E6D , 0x6073     },
         { 0xC2A29A69 , 0xE97E7B6A },
         { 0xEE067F11 , 0x31B0DDE4 },
@@ -74,15 +74,15 @@ static const Jump Gen3JumpTable[32] = {
  * Never used except to generate the above table
  * There is no need to generate the table multiple times
 */
-JumpTable *compute_jump_table();
-uint32_t jump_ahead(const Jump table[32], uint32_t seed, uint32_t advances);
+JumpTable *_computeJumpTable();
+uint32_t RNGJumpAhead(const Jump table[32], uint32_t seed, uint32_t advances);
 
-void increment_seed(uint32_t *seed, uint32_t advances);
-void decrement_seed(uint32_t *seed, uint32_t advances);
+void RNGIncrementSeed(uint32_t *seed, uint32_t advances);
+void RNGDecrementSeed(uint32_t *seed, uint32_t advances);
 
-uint32_t next_seed(const uint32_t *seed);
-uint16_t nextUShort(uint16_t max, uint32_t seed);
+uint32_t RNGNexSeed(const uint32_t *seed);
+uint16_t RNGNextUShort(uint16_t max, uint32_t seed);
 
-uint8_t calculate_level(Slot s, uint32_t seed);
+uint8_t RNGCalculateLevel(Slot s, uint32_t seed);
 
 #endif

@@ -7,18 +7,18 @@
 
 #define MAX_DEX 251
 
-extern const char* gender_s[3];
-extern const char* shiny_types[3];
-extern const char* encounter_category[8];
+extern const char* GENDER_STRINGS[3];
+extern const char* SHINY_TYPES[3];
+extern const char* ENCOUNTER_CATEGORY[8];
 
-const char* get_nature_str(uint8_t key);
-const char* get_gender_str(uint8_t key);
+const char* PokemonGetNatureString(uint8_t key);
+const char* PokemonGetGenderString(uint8_t key);
 
-uint8_t is_shiny(uint32_t PID, uint32_t TID, uint32_t SID);
-uint8_t get_hp_value(const uint8_t *IVs);
-uint8_t get_hp_power(const uint8_t *IVs);
-uint8_t get_unown_shape(uint32_t PID);
-char unown_symbols(int val);
+uint8_t PokemonIsShiny(uint32_t PID, uint32_t TID, uint32_t SID);
+uint8_t PokemonGetHPValue(const uint8_t *IVs);
+uint8_t PokemonGetHP(const uint8_t *IVs);
+uint8_t PokemonGetUnownLetter(uint32_t PID);
+char PokemonGetUnownSymbolChar(int val);
 
 typedef struct {
     int key;
@@ -40,7 +40,7 @@ typedef struct {
     const char *type;
 } HiddenPower;
 
-uint8_t get_gender(uint32_t PID, GenderRatio gr);
+uint8_t PokemonGetGender(uint32_t PID, GenderRatio gr);
 
 typedef struct {
     uint32_t dex;
@@ -74,9 +74,9 @@ extern const Encounter StaticEncounters[];
 extern const HiddenPower HP[16];
 extern const double nature_multiplier_table[25][5];
 
-int searchPokemon(const char* name);
+int PokemonSearchIndex(const char* name);
 
-void listNatures();
-uint8_t findAbilityIndex(uint8_t dex, const char* name);
+void PokemonListNatures();
+uint8_t PokemonFindAbilityIndex(uint8_t dex, const char* name);
 
 #endif

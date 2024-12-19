@@ -25,7 +25,7 @@ typedef enum {
 } GameVersion;
 
 typedef enum {
-    English,
+    ENGLISH,
     EU,
     JPN
 } Language;

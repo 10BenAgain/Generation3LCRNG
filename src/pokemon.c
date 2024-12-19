@@ -9,19 +9,19 @@ const char* stats[6] = {
         "Spe"
 };
 
-const char* gender_s[3] = {
+const char* GENDER_STRINGS[3] = {
     "Male",
     "Female",
     "None"
 };
 
-const char* shiny_types[3] = {
+const char* SHINY_TYPES[3] = {
         "None",
         "Star",
         "Square"
 };
 
-const char* encounter_category[8] = {
+const char* ENCOUNTER_CATEGORY[8] = {
         "Starter",
         "Fossil",
         "Gift",
@@ -397,26 +397,26 @@ const Encounter StaticEncounters[] = {
 };
 
 const char* 
-get_nature_str(uint8_t key) {
+PokemonGetNatureString(uint8_t key) {
     if (key > 25)
         return "Huh?!";
     return natures[key].name;
 }
 
 const char* 
-get_gender_str(uint8_t key) {
+PokemonGetGenderString(uint8_t key) {
     switch (key)
     {
     case 0:
     case 1: 
-        return gender_s[key];
+        return GENDER_STRINGS[key];
     default:
-        return gender_s[2];
+        return GENDER_STRINGS[2];
     }
 }
 
 uint8_t
-is_shiny(uint32_t PID, uint32_t TID, uint32_t SID) {
+PokemonIsShiny(uint32_t PID, uint32_t TID, uint32_t SID) {
     uint16_t psv = (TID ^ SID) ^ (PID >> 16) ^ (PID & 0xFFFF);
 
     if (psv == 0)
@@ -431,7 +431,7 @@ is_shiny(uint32_t PID, uint32_t TID, uint32_t SID) {
 }
 
 uint8_t
-get_gender(uint32_t PID, GenderRatio gr) {
+PokemonGetGender(uint32_t PID, GenderRatio gr) {
     switch (gr)
         {
         case 0:
@@ -445,7 +445,7 @@ get_gender(uint32_t PID, GenderRatio gr) {
 
 // https://bulbapedia.bulbagarden.net/wiki/Hidden_Power_(move)/Calculation
 uint8_t
-get_hp_value(const uint8_t *IVs) {
+PokemonGetHPValue(const uint8_t *IVs) {
     int sum = 0;
     int i, j;
     for (i = 0, j = 1; i < 3; i++, j *= 2) {
@@ -459,7 +459,7 @@ get_hp_value(const uint8_t *IVs) {
 }
 
 uint8_t
-get_hp_power(const uint8_t *IVs) {
+PokemonGetHP(const uint8_t *IVs) {
     int sum = 0;
     int i, j;
     for (i = 0, j = 1; i < 3; i++, j *= 2) {
@@ -479,7 +479,7 @@ get_hp_power(const uint8_t *IVs) {
 // 0000011 00000011 00000011 00000011 = (0x3030303 & 3  ) =   (                             00000011) 
 
 uint8_t
-get_unown_shape(uint32_t PID) {
+PokemonGetUnownLetter(uint32_t PID) {
     return (
         ((PID & 0x3000000) >> 18) | 
         ((PID & 0x30000) >> 12) | 
@@ -488,7 +488,7 @@ get_unown_shape(uint32_t PID) {
 }
 
 char
-unown_symbols(int val) {
+PokemonGetUnownSymbolChar(int val) {
     if (val > 25) {
         switch (val) {
             case 26:
@@ -502,7 +502,8 @@ unown_symbols(int val) {
         return (char)(val + 65);
 }
 
-int searchPokemon(const char* name) {
+int
+PokemonSearchIndex(const char* name) {
     for (size_t i = 0; i < sizeof(pokemon)/sizeof(Pokemon); i++) {
         if (!strcmp(name, pokemon[i].name)) {
             return (int)(pokemon[i].dex - 1);
@@ -511,7 +512,8 @@ int searchPokemon(const char* name) {
     return -1;
 }
 
-void listNatures() {
+void
+PokemonListNatures() {
     for (size_t i = 0; i < 25; i++) {
         const char* stat_up = "None";
         const char* stat_down = "None";
@@ -527,7 +529,8 @@ void listNatures() {
     }
 }
 
-uint8_t findAbilityIndex(uint8_t dex, const char* name) {
+uint8_t
+PokemonFindAbilityIndex(uint8_t dex, const char* name) {
     if (dex > MAX_DEX || name == NULL) return 2;
     Pokemon mon = pokemon[dex - 1];
 

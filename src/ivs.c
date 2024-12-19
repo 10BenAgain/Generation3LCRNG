@@ -19,7 +19,7 @@ calculate_stat(uint16_t base_s, uint8_t iv, Nature nt, uint8_t level, uint8_t in
 }
 
 void
-get_all_stat_iv_range(IVEstimate *est) {
+IVsGetAllStatRanges(IVEstimate *est) {
     int i, j;
     for (i = 0; i < 6; i++) {
         for (j = 0; j < 32; j ++) {
@@ -30,7 +30,7 @@ get_all_stat_iv_range(IVEstimate *est) {
 }
 
 void
-get_iv_range(Pokemon mon, Nature nt, uint8_t level, uint16_t stat, uint8_t index, uint8_t result[32]) {
+IVsGetIVRange(Pokemon mon, Nature nt, uint8_t level, uint16_t stat, uint8_t index, uint8_t result[32]) {
     int i;
     for (i = 0; i < 32; i++) {
         uint16_t st = calculate_stat(mon.base_stats[index], i, nt, level, index);
@@ -41,7 +41,7 @@ get_iv_range(Pokemon mon, Nature nt, uint8_t level, uint16_t stat, uint8_t index
 }
 
 void
-find_bounds(int arr[32], int *l, int *u) {
+IVsFindBounds(int arr[32], int *l, int *u) {
     int i, j;
     *l = -1;
     for (i = 0; i < 32; i++) {
@@ -60,7 +60,7 @@ find_bounds(int arr[32], int *l, int *u) {
 }
 
 void
-get_range_difference(int r1[6][32], int r2[6][32], int rte[6][32]) {
+IVsGetRangeDifference(int r1[6][32], int r2[6][32], int rte[6][32]) {
     int i, j;
     for (i = 0; i < 6; i++) {
         for (j = 0; j < 32; j ++) {

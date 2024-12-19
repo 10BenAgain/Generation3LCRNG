@@ -74,7 +74,7 @@ count_lines_in_file(const char *fp) {
 }
 
 InitialSeed
-*load_initial_seeds(const char *fn, uint64_t *len, SeedOffset ofs) {
+*SeedLoadInitial(const char *fn, uint64_t *len, SeedOffset ofs) {
     uint64_t lc = count_lines_in_file(fn);
     if (lc <= 0) return NULL;
 
@@ -122,7 +122,7 @@ InitialSeed
 }
 
 const char
-*get_seed_file_path(Settings set) {
+*SeedGetFilePath(Settings set) {
 #ifdef BUILD_PATH
     char *LGpath = "../data/LG/";
     char *FRpath = "../data/FR/";
@@ -146,7 +146,7 @@ const char
     }
 
     switch(set.lang) {
-        case English:
+        case ENGLISH:
             language = "ENG/";
             break;
         case EU:
@@ -196,7 +196,7 @@ const char
 
 /* Linear search is probably bad but w/e */
 int
-find_seed_index(InitialSeed *set, uint32_t seed, uint64_t length) {
+SeedFindIndex(InitialSeed *set, uint32_t seed, uint64_t length) {
     if (set == NULL) return 0;
 
     for (size_t i = 0; i < length; i++) {
@@ -208,7 +208,7 @@ find_seed_index(InitialSeed *set, uint32_t seed, uint64_t length) {
 }
 
 InitialSeed
-*get_seed_range(InitialSeed *set, uint64_t length, int index, uint16_t range, uint64_t *newLen) {
+*SeedGetSeedRange(InitialSeed *set, uint64_t length, int index, uint16_t range, uint64_t *newLen) {
     uint64_t start, end;
 
     if (index - range > 0) {
