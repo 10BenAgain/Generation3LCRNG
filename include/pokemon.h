@@ -69,7 +69,7 @@ typedef struct {
 } Encounter;
 
 extern const Nature natures[25];
-extern const Pokemon pokemon[252];
+extern const Pokemon pokemon[MAX_DEX];
 extern const Encounter StaticEncounters[];
 extern const HiddenPower HP[16];
 extern const double nature_multiplier_table[25][5];
@@ -78,5 +78,6 @@ int PokemonSearchIndex(const char* name);
 
 void PokemonListNatures();
 uint8_t PokemonFindAbilityIndex(uint8_t dex, const char* name);
+int PokemonGetNatureIndex(const char* nat);
 
 #endif

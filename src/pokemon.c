@@ -108,7 +108,7 @@ const double nature_multiplier_table[25][5] = {
     {1.0,   1.0,   1.0,   1.0,   1.0},
 };
 
-const Pokemon pokemon[252] = {
+const Pokemon pokemon[] = {
     { 1, "Bulbasaur", {45, 49, 49, 65, 65, 45}, F1M7, "Overgrow", "Overgrow" },
     { 2, "Ivysaur", {60, 62, 63, 80, 80, 60}, F1M7, "Overgrow", "Overgrow" },
     { 3, "Venusaur", {80, 82, 83, 100, 100, 80}, F1M7, "Overgrow", "Overgrow" },
@@ -403,6 +403,16 @@ PokemonGetNatureString(uint8_t key) {
     return natures[key].name;
 }
 
+int
+PokemonGetNatureIndex(const char* nat) {
+    for (size_t i = 0; i < sizeof(natures)/sizeof(natures[0]); i++) {
+        if (!strcmp(nat, natures[i].name)) {
+            return natures[i].key;
+        }
+    }
+    return -1;
+}
+
 const char* 
 PokemonGetGenderString(uint8_t key) {
     switch (key)
@@ -502,9 +512,10 @@ PokemonGetUnownSymbolChar(int val) {
         return (char)(val + 65);
 }
 
+
 int
 PokemonSearchIndex(const char* name) {
-    for (size_t i = 0; i < sizeof(pokemon)/sizeof(Pokemon); i++) {
+    for (size_t i = 0; i < MAX_DEX; i++) {
         if (!strcmp(name, pokemon[i].name)) {
             return (int)(pokemon[i].dex - 1);
         }
